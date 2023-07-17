@@ -42,34 +42,5 @@ class UserSeeder extends Seeder
 
     $admin->attachRole([$roleAdmin->id]);
     $roleAdmin->attachPermission([$permissionAdmin1->id, $permissionAdmin2->id]);
-
-    /* Gudang */
-    $gudang = User::create([
-      'username' => 'gudang',
-      'name' => 'Operator Gudang',
-      'email' => 'gudang@aristo.com',
-      'password' => Hash::make('123'),
-    ]);
-
-    $roleGudang = Role::create([
-      'name' => 'gudang',
-      'display_name' => 'gudang',
-      'description' => 'Operator Gudang'
-    ]);
-
-    $permissionGudang1 = Permission::create([
-      'name' => 'whs-operator-view',
-      'display_name' => 'GUDANG - OPERATOR - VIEW',
-      'description' => 'GUDANG - OPERATOR - VIEW'
-    ]);
-
-    $permissionGudang2 = Permission::create([
-      'name' => 'whs-operator-create',
-      'display_name' => 'GUDANG - OPERATOR - CREATE',
-      'description' => 'GUDANG - OPERATOR - CREATE'
-    ]);
-
-    $gudang->attachRole([$roleGudang->id]);
-    $roleGudang->attachPermission([$permissionGudang1->id, $permissionGudang2->id]);
   }
 }

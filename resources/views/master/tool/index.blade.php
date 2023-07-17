@@ -5,12 +5,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Master Operator</h1>
+          <h1 class="m-0">Master Tool</h1>
         </div> <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item active">Master Operator</li>
+            <li class="breadcrumb-item active">Master Tool</li>
           </ol>
         </div> <!-- /.col -->
       </div> <!-- /.row -->
@@ -26,6 +26,16 @@
             </div> <!-- /.card-header -->
             <div class="card-body">
               <div class="row">
+                <div class="col-sm-2">
+                  <div class="form-group">
+                    <label for="filter_st_aktif">Aktif</label>
+                    <select name="filter_st_aktif" id="filter_st_aktif" class="form-control select2">
+                      <option value="ALL">ALL</option>
+                      <option value="1" selected>AKTIF</option>
+                      <option value="0">NON AKTIF</option>
+                    </select>
+                  </div>
+                </div> <!-- /.col -->
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-display">Display</label>
@@ -44,10 +54,15 @@
               <table class="table tale-striped table-bordered table-sm w-100" id="table-master">
                 <thead>
                   <tr>
-                    <th class="text-center" style="width: 5%;">No</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center" style="width: 30%;">Divisi</th>
-                    <th class="text-center" style="width: 15%;">Action</th>
+                    <th class="text-center align-middle" style="width: 5%;">No</th>
+                    <th class="text-center align-middle" style="width: 15%;">Kode</th>
+                    <th class="text-center align-middle">Nama</th>
+                    <th class="text-center align-middle" style="width: 10%;">Jenis</th>
+                    <th class="text-center align-middle" style="width: 10%;">Stok</th>
+                    <th class="text-center align-middle" style="width: 10%;">Stok Minimal</th>
+                    <th class="text-center align-middle" style="width: 10%;">Harga</th>
+                    <th class="text-center align-middle" style="width: 10%;">Aktif</th>
+                    <th class="text-center align-middle" style="width: 10%;">Action</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -60,10 +75,12 @@
   </section> <!-- /.content -->
 </div> <!-- /.content-wrapper -->
 
+<!-- Form Redirect -->
+@include('components.form_redirect', ['target' => 'tool.index']);
 <!-- Modal Create -->
-@include('master.popup.modalCreateOperator')
+@include('master.popup.modalCreateTool')
 <!-- Modal Edit -->
-@include('master.popup.modalEditOperator')
+@include('master.popup.modalEditTool')
 
 @endsection
 @section('script')
@@ -71,18 +88,17 @@
   let tableMaster;
 
   $(document).ready(function () {
-    $('#modalCreateOperator').on('show.bs.modal', function () {
-      $('#create_divisi').select2({
-        dropdownParent: $('#modalCreateOperator'),
-        placeholder: 'Pilih Divisi',
+    $(function () {
+      $('#create_kd_jenis').select2({
+        dropdownParent: $('#modalCreateTool'),
+        placeholder: 'Jenis',
         tags: true,
         width: '100%'
       });
-    });
 
-    $('#modalEditOperator').on('shown.bs.modal', function () {
-      $('#edit_divisi').select2({
-        dropdownParent: $('#modalEditOperator'),
+      $('#edit_kd_jenis').select2({
+        dropdownParent: $('#modalEditTool'),
+        placeholder: 'Jenis',
         tags: true,
         width: '100%'
       });
@@ -94,9 +110,18 @@
   /**
    * crud
    */
-  function storeOperator() {
+  function storeTool() {
+    let length = $('#form-create [required]').length;
+    for (let i = 0; i < length; i++) {
+      let value = $(`#form-create [required]:eq(${i})`).val();
+      if (value == '') {
+        Swal.fire('Warning', '(*) Wajib diisi', 'warning');
+        return ;
+      }
+    }
+
     Swal.fire({
-      title: 'Simpan Operator',
+      title: 'Simpan Tool',
       text: 'Anda yakin ingin menyimpan?',
       icon: 'question',
       showConfirmButton: true,
@@ -108,33 +133,42 @@
       reverseButtons: true,
       focusCancel: true
     }).then(result => {
-      if (result.isDismissed) return ;
+      if (result.isDismissed) return ;  
 
-      let url = "{{ route('operator.store') }}";
+      let url = "{{ route('tool.store') }}";
       let data = $('#form-create').serialize();
 
       $('#loading').show();
       $.post(url, data, res => {
         $('#loading').hide();
 
-        $('#modalCreateOperator').modal('hide');
-        $('#modalCreateOperator #create_nm_operator').val('');
-        $('#modalCreateOperator #create_divisi').val('').change();
+        $('#modalCreateTool').modal('hide');
+        $('#modalCreateTool #form-create :input').val('');
+        $('#modalCreateTool #form-create #create_st_aktif_true').attr('checked', true);
 
         Swal.fire(res.title, res.message, res.status);
-        changeOptionDivisi(res.data.divisi);
+        changeOptionJenis(res.data.jenis);
         reloadTableMaster();
       }).fail(xhr => {
         $('#loading').hide();
         let res = xhr.responseJSON || {};
         Swal.fire(res.title || 'Failed', res.message || 'Terjadi kesalahan pada system, harap coba lagi', res.status || 'error');
       });
-    });
+    })
   }
 
-  function updateOperator(id) {
+  function updateTool(kd_tool) {
+    let length = $('#form-edit [required]').length;
+    for (let i = 0; i < length; i++) {
+      let value = $(`#form-edit [required]:eq(${i})`).val();
+      if (value == '') {
+        Swal.fire('Warning', '(*) Wajib diisi', 'warning');
+        return ;
+      }
+    }
+
     Swal.fire({
-      title: 'Edit Operator',
+      title: 'Update Tool',
       text: 'Anda yakin ingin mengubah?',
       icon: 'question',
       showConfirmButton: true,
@@ -148,22 +182,20 @@
     }).then(result => {
       if (result.isDismissed) return ;
 
-      let url = "{{ route('operator.update', 'param') }}";
-      url = url.replace('param', btoa(id));
+      let url = "{{ route('tool.update', 'param') }}";
+      url = url.replace('param', btoa(kd_tool));
       let data = $('#form-edit').serialize();
 
       $('#loading').show();
       $.post(url, data, res => {
         $('#loading').hide();
 
-        $('#modalEditOperator').modal('hide');
-        $('#modalEditOperator #edit_nm_operator').val('');
-        $('#modalEditOperator #edit_divisi').val('').change();
-
-        $('#modalEditOperator .modal-footer button:eq(1)').attr('onclick', `updateOperator()`);
+        $('#modalEditTool').modal('hide');
+        $('#modalEditTool #form-edit :input').val('');
+        $('#modalEditTool #form-edit #edit_st_aktif_true').attr('checked', true);
 
         Swal.fire(res.title, res.message, res.status);
-        changeOptionDivisi(res.data.divisi);
+        changeOptionJenis(res.data.jenis);
         reloadTableMaster();
       }).fail(xhr => {
         $('#loading').hide();
@@ -173,9 +205,9 @@
     });
   }
 
-  function deleteOperator(id) {
+  function deleteTool(kd_tool) {
     Swal.fire({
-      title: 'Hapus Operator',
+      title: 'Hapus Tool',
       text: 'Anda yakin ingin menghapus?',
       icon: 'question',
       showConfirmButton: true,
@@ -189,18 +221,15 @@
     }).then(result => {
       if (result.isDismissed) return ;
 
-      let url = "{{ route('operator.destroy', 'param') }}";
-      url = url.replace('param', btoa(id));
+      let url = "{{ route('tool.destroy', 'param') }}";
+      url = url.replace('param', btoa(kd_tool));
 
       $('#loading').show();
       $.post(url, { _method: 'delete' }, res => {
         $('#loading').hide();
-
         Swal.fire(res.title, res.message, res.status);
-        changeOptionDivisi(res.data.divisi);
         reloadTableMaster();
       }).fail(xhr => {
-        $('#loading').hide();
         let res = xhr.responseJSON || {};
         Swal.fire(res.title || 'Failed', res.message || 'Terjadi kesalahan pada system, harap coba lagi', res.status || 'error');
       });
@@ -210,9 +239,13 @@
   /**
    * utility
    */
-  function changeOptionDivisi(divisi) {
-    $('#create_divisi').html(optionDivisi(divisi));
-    $('#edit_divisi').html(optionDivisi(divisi));
+  function changeOptionJenis(jenis) {
+    let option = `
+      <option></option>
+      ${jenis.map(j => `<option value="${j.kd_jenis}">${j.nm_jenis}</option>`).join('')}
+    `;
+
+    $('select[name="kd_jenis"]').html(option);
   }
 
   function reloadTableMaster() {
@@ -220,39 +253,39 @@
   }
 
   /**
-   * html
-   */
-  function optionDivisi(divisi) {
-    return `
-      <option></option>
-      ${divisi.map(d => `<option value="${d}">${d}</option>`).join('')}
-    `;
-  }
-
-  /**
-   * popup modal
+   * popup
    */
   function popupModalCreate() {
-    $('#modalCreateOperator').modal('show');
+    $('#modalCreateTool').modal('show');
   }
 
-  function popupModalEdit(id) {
-    let row = `#row-${id}`;
-    let data = tableMaster.row(row).data();
+  function popupModalEdit(kd_tool) {
+    let data = tableMaster.row(`#row-${btoa(kd_tool)}`).data();
 
-    $('#modalEditOperator #edit_nm_operator').val(data.nm_operator);
-    $('#modalEditOperator #edit_divisi').val(data.divisi).change();
+    $('#edit_kd_tool').val(data.kd_tool);
+    $('#edit_nm_tool').val(data.nm_tool);
+    $('#edit_kd_jenis').val(data.kd_jenis).change();
+    $('#edit_stok').val(data.stok);
+    $('#edit_stok_minimal').val(data.stok_minimal);
+    $('#edit_harga').val(data.harga);
+    if (data.st_aktif == true) {
+      $('#edit_st_aktif_true').attr('checked', true);
+    } else {
+      $('#edit_st_aktif_false').attr('checked', true);
+    }
 
-    $('#modalEditOperator .modal-footer button:eq(1)').attr('onclick', `updateOperator(${id})`);
+    $('#modalEditTool .modal-footer button:eq(1)').attr('onclick', `updateTool('${kd_tool}');`);
 
-    $('#modalEditOperator').modal('show');
+    $('#modalEditTool').modal('show');
   }
 
   /**
    * init datatable
    */
   function initTableMaster() {
-    tableMaster = $('#table-master').DataTable({
+    tableMaster = $('#table-master').on('preXhr.dt', function (e, settings, dt) {
+      dt.st_aktif = $('#filter_st_aktif').val();
+    }).DataTable({
       "columnDefs": [{
         render: (data, type, row, meta) => {
           return meta.row + meta.settings._iDisplayStart + 1;
@@ -262,7 +295,7 @@
         "targets": 0,
       }, {
         "className": "dt-center",
-        "targets": [0, 2, 3]
+        "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8]
       }],
       "aLengthMenu": [
         [5, 10, 25, 50, 75, 100, -1],
@@ -274,14 +307,19 @@
       serverSide: true,
       destroy: true,
       order: [],
-      ajax: "{{ route('datatable.operator') }}",
+      ajax: "{{ route('datatable.tool') }}",
       columns: [
         { data: null, name: null },
-        { data: 'nm_operator', name: 'nm_operator' },
-        { data: 'divisi', name: 'divisi' },
+        { data: 'kd_tool', name: 'kd_tool' },
+        { data: 'nm_tool', name: 'nm_tool' },
+        { data: 'nm_jenis', name: 'nm_jenis' },
+        { data: 'stok', name: 'stok', searchable: false },
+        { data: 'stok_minimal', name: 'stok_minimal', searchable: false },
+        { data: 'harga', name: 'harga', searchable: false },
+        { data: 'st_aktif_html', name: 'st_aktif_html', orderable: false, searchable: false },
         { data: 'action', name: 'action', searchable: false, orderable: false, },
       ],
-      rowId: operator => `row-${operator.id}`
+      rowId: tool => `row-${btoa(tool.kd_tool)}`
     });
   }
 </script>

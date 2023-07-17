@@ -90,12 +90,12 @@ class User extends Authenticatable
   /* utility */
   /**
    * untuk menambah role kepada user
-   * @param array|string $roles id
+   * @param array|string|integer $roles id
    */
   public function attachRole($roles)
   {
     $user_id = $this->id;
-    if (gettype($roles) == 'string') {
+    if (in_array(gettype($roles), ['string', 'integer'])) {
       $roles = [$roles];
     }
 

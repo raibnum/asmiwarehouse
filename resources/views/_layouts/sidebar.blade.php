@@ -73,15 +73,25 @@
         <!-- END ADMIN -->
 
         <!-- MASTER -->
-        @if($USERLOGIN->isAble(['whs-operator-view']))
+        @if($USERLOGIN->isAble(['whs-operator-*', 'whs-tool-*']))
           <li class="nav-header font-weight-bold">MASTER</li>
-          <li class="nav-item">
-            <a href="{{ route('operator.index') }}"
-              class="nav-link {{ route('operator.index') == request()->url() ? 'active' : '' }}">
-              <i class="nav-icon fas fa-user-cog"></i>
-              <p>Operator</p>
-            </a>
-          </li>
+          @if ($USERLOGIN->isAble(['whs-operator-*']))
+            <li class="nav-item">
+              <a href="{{ route('operator.index') }}"
+                class="nav-link {{ route('operator.index') == request()->url() ? 'active' : '' }}">
+                <i class="nav-icon fas fa-user-cog"></i>
+                <p>Operator</p>
+              </a>
+            </li>
+          @endif
+          @if ($USERLOGIN->isAble(['whs-tool-*']))
+            <li class="nav-item">
+              <a href="{{ route('tool.index') }}" class="nav-link {{ route('tool.index') == request()->url() ? 'active' : '' }}">
+                <i class="nav-icon fas fa-toolbox"></i>
+                <p>Tool</p>
+              </a>
+            </li>
+          @endif
         @endif
         <!-- END MASTER -->
 

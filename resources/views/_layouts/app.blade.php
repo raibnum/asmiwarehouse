@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 $USERLOGIN = Auth::user();
 @endphp
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
   <div id="loading"
     style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 1059; background-color: #00000080; display: none;">
     <img src="{{ asset('images/loader.gif') }}" alt="loader" class="d-block m-auto"

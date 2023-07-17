@@ -1,14 +1,16 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DatatableController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MasterOperatorController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\PinjamToolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DatatableController;
+use App\Http\Controllers\MasterToolController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PinjamToolController;
+use App\Http\Controllers\MasterOperatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
   // master
   Route::prefix('master')->group(function () {
     Route::resource('operator', MasterOperatorController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::get('operator/dashboard', [MasterOperatorController::class, 'dashboard'])->name('operator.dashboard');
+    Route::resource('tool', MasterToolController::class)->only(['index', 'store', 'update', 'destroy']);
   });
 
   // transaksi
@@ -71,6 +73,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('operator', [DatatableController::class, 'operator'])->name('datatable.operator');
     Route::get('permission', [DatatableController::class, 'permission'])->name('datatable.permission');
     Route::get('role', [DatatableController::class, 'role'])->name('datatable.role');
+    Route::get('tool', [DatatableController::class, 'tool'])->name('datatable.tool');
     Route::get('user', [DatatableController::class, 'user'])->name('datatable.user');
   });
+
+  // redirect
+  Route::get('redirect', function (Request $request) {
+    $target = $request->target ?? 'home';
+
+    $status = $request->status ?? 'success';
+    $message = $request->message ?? 'Aksi berhasil dilakukan';
+
+    $request->session()->flash('alert-status', $status);
+    $request->session()->flash('alert-message', $message);
+
+    return redirect()->route($target);
+  })->name('redirect');
 });

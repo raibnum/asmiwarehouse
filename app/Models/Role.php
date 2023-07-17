@@ -14,12 +14,12 @@ class Role extends Model
 
   /**
    * untuk menambah permission ke role
-   * @param array|string $permission (id)
+   * @param array|string|integer $permission (id)
    */
   public function attachPermission($permissions)
   {
     $role_id = $this->id;
-    if (gettype($permissions) == 'string') {
+    if (in_array(gettype($permissions), ['string', 'integer'])) {
       $permissions = [$permissions];
     }
 
