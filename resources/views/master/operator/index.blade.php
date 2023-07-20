@@ -3,9 +3,9 @@
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row">
         <div class="col-sm-6">
-          <h1 class="m-0">Master Operator</h1>
+          <h1>Master Operator</h1>
         </div> <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -254,9 +254,7 @@
   function initTableMaster() {
     tableMaster = $('#table-master').DataTable({
       "columnDefs": [{
-        render: (data, type, row, meta) => {
-          return meta.row + meta.settings._iDisplayStart + 1;
-        },
+        render: (data, type, row, meta) => meta.row + 1,
         "searchable": false,
         "orderable": false,
         "targets": 0,

@@ -27,6 +27,7 @@ return new class extends Migration
       $table->integer('stok_minimal')->nullable()->default(0);
       $table->integer('harga')->nullable()->default(0);
       $table->boolean('st_aktif')->nullable()->default(true);
+      $table->boolean('st_sekali_pakai')->nullable()->default(false);
       $table->timestamps();
 
       $table->primary('kd_tool');
@@ -64,6 +65,7 @@ return new class extends Migration
     Schema::create('tr_pinj_tool2s', function (Blueprint $table) {
       $table->string('kd_pinj', 13);
       $table->string('kd_tool', 50);
+      $table->integer('qty');
       $table->timestamp('tgl_kembali')->nullable();
 
       $table->primary(['kd_pinj', 'kd_tool']);

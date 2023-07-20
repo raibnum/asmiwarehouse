@@ -96,17 +96,19 @@
         <!-- END MASTER -->
 
         <!-- TRANSAKSI -->
-        @if($USERLOGIN->isAble(['whs-pinjtool-*']))
+        @if($USERLOGIN->isAble(['whs-pinj-tool*']))
           <li class="nav-header font-weight-bold">TRANSAKSI</li>
-            @if ($USERLOGIN->isAble(['whs-pinjtool-*']))
-            <li class="nav-item">
-              <a href="{{ route('pinjtool.index') }}"
-                class="nav-link {{ route('pinjtool.index') == request()->url() ? 'active' : '' }}">
-                <i class="nav-icon fas fa-tools"></i>
-                <p>Pinjam Tool</p>
-              </a>
-            </li>
+
+            @if ($USERLOGIN->isAble(['whs-pinj-tool-*']))
+              <li class="nav-item">
+                <a href="{{ route('pinjtool.index') }}"
+                  class="nav-link {{ route('pinjtool.index') == request()->url() ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-tools"></i>
+                  <p>Pinjam Tool</p>
+                </a>
+              </li>
             @endif
+
           </li>
         @endif
         <!-- END TRANSAKSI -->

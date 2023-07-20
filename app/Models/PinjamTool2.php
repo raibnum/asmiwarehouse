@@ -14,8 +14,14 @@ class PinjamTool2 extends Model
   protected $keyType = 'string';
   public $increment = false;
 
+  /* RELATIONSHIP */
   public function pinjamTool1()
   {
     return $this->belongsTo(PinjamTool1::class, 'kd_pinj', 'kd_pinj');
+  }
+
+  public function tool()
+  {
+    return $this->belongsTo(Tool::class, 'kd_tool', 'kd_tool');
   }
 }

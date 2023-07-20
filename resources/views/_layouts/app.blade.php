@@ -46,6 +46,9 @@ $USERLOGIN = Auth::user();
 
   <!-- REQUIRED SCRIPTS -->
   @include('_layouts.scripts')
+  <script>
+    moment.locale('id');
+  </script>
   @yield('script')
   <script>
     $(document).ready(function () {

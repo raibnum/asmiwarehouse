@@ -65,8 +65,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('tool', MasterToolController::class)->only(['index', 'store', 'update', 'destroy']);
   });
 
-  // transaksi
-  Route::resource('pinjtool', PinjamToolController::class)->only(['index', 'store', 'update', 'destroy']);
+  Route::prefix('transaksi')->group(function () {
+    // transaksi
+    Route::resource('pinjtool', PinjamToolController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('pinjtool/dashboard', [PinjamToolController::class, 'dashboard'])->name('pinjtool.dashboard');
+  });
 
   // datatable
   Route::prefix('datatable')->group(function () {

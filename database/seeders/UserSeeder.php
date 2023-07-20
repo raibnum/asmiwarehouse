@@ -15,32 +15,21 @@ class UserSeeder extends Seeder
    */
   public function run(): void
   {
-    $admin = User::create([
-      'username' => 'admin',
-      'name' => 'Admin Aristo',
-      'email' => 'admin@aristo.com',
-      'password' => Hash::make('admin'),
+    $this->gudang();
+  }
+
+  private function gudang(): void
+  {
+    $gudang = User::create([
+      'username' => 'gudang',
+      'name' => 'Operator Gudang',
+      'email' => 'gudang@aristo.com',
+      'password' => Hash::make('123')
     ]);
 
-    $roleAdmin = Role::create([
-      'name' => 'admin',
-      'display_name' => 'admin',
-      'description' => 'Operator Gudang'
-    ]);
-
-    $permissionAdmin1 = Permission::create([
-      'name' => 'admin-permission-view',
-      'display_name' => 'ADMIN - PERMISSION - VIEW',
-      'description' => 'ADMIN - PERMISSION - VIEW'
-    ]);
-
-    $permissionAdmin2 = Permission::create([
-      'name' => 'admin-permission-create',
-      'display_name' => 'ADMIN - PERMISSION - CREATE',
-      'description' => 'ADMIN - PERMISSION - CREATE'
-    ]);
-
-    $admin->attachRole([$roleAdmin->id]);
-    $roleAdmin->attachPermission([$permissionAdmin1->id, $permissionAdmin2->id]);
+    $role = Role::where('name', 'like', 'whs%')->get()->all();
+    foreach ($role as $r) {
+      $gudang->attachRole([$r->id]);
+    }
   }
 }
