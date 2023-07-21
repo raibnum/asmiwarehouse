@@ -18,15 +18,17 @@ class Tool extends Model
 	public $increment = false;
 
 	protected $fillable = ['kd_tool', 'nm_tool', 'kd_jenis', 'stok', 'stok_minima', 'harga', 'st_aktif'];
-	// protected $visible = ['stok_available'];
 
-	/* ACCESSOR */
-	protected function stokAvailable()
+	/* ACCESSOR & MUTATOR*/
+	/**
+	 * need type hinting for accessor (get) and mutator (set) :Attribute
+	 * https://laravel.com/docs/10.x/eloquent-mutators#defining-an-accessor
+	 */
+	protected function stokAvailable(): Attribute
 	{
 		$stok = $this->stok - array_sum($this->pinjamTool2()->pluck('qty')->all());
-		return Attribute::make(
+		return new Attribute(
 			get: fn () => $stok,
-			set: fn () => $stok
 		);
 	}
 

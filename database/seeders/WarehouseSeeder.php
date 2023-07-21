@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Permission;
+use App\Models\JenisTool;
+use App\Models\Tool;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class WarehouseSeeder extends Seeder
@@ -16,6 +14,25 @@ class WarehouseSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		//
+		JenisTool::create([
+			'kd_jenis' => 'IN',
+			'nm_jenis' => 'INSERT'
+		]);
+
+		JenisTool::create([
+			'kd_jenis' => 'BG',
+			'nm_jenis' => 'BATU GRINDING'
+		]);
+
+		Tool::create([
+			'kd_tool' => 'IN-APMT-11-35',
+			'nm_tool' => 'APMT 1135 PDER-PM',
+			'kd_jenis' => 'IN',
+			'stok' => 10,
+			'stok_minimal' => 10,
+			'harga' => 10000,
+			'st_aktif' => true,
+			'st_sekali_pakai' => true
+		]);
 	}
 }
