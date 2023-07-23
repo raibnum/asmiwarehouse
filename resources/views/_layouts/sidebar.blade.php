@@ -96,7 +96,7 @@
         <!-- END MASTER -->
 
         <!-- TRANSAKSI -->
-        @if($USERLOGIN->isAble(['whs-pinj-tool*']))
+        @if ($USERLOGIN->isAble(['whs-pinj-tool*', 'whs-inout-tool*']))
           <li class="nav-header font-weight-bold">TRANSAKSI</li>
 
             @if ($USERLOGIN->isAble(['whs-pinj-tool-*']))
@@ -106,6 +106,60 @@
                   <i class="nav-icon fas fa-tools"></i>
                   <p>Pinjam Tool</p>
                 </a>
+              </li>
+            @endif
+              
+            @if ($USERLOGIN->isAble(['whs-inout-tool-*']))
+              <li class="nav-item">
+                <a href="{{ route('inouttool.index') }}"
+                  class="nav-link {{ route('inouttool.index') == request()->url() ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-exchange-alt"></i>
+                  <p>Inout Tool</p>
+                </a>
+              </li>
+            @endif
+
+            @if ($USERLOGIN->isAble(['whs-pp-tool-*']))
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-receipt"></i>
+                  <p>
+                    PP Tool
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                  @if ($USERLOGIN->isAble(['whs-pp-tool-create']))
+                    <li class="nav-item">
+                      <a href="{{ route('pptool.index') }}"
+                        class="nav-link {{ route('pptool.index') == request()->url() ? 'active' : '' }}">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>Input</p>
+                      </a>
+                    </li>
+                  @endif
+
+                  @if ($USERLOGIN->isAble(['whs-pp-tool-approve']))
+                    <li class="nav-item">
+                      <a href="{{ route('pptool.indexApprove') }}"
+                        class="nav-link {{ route('pptool.indexApprove') == request()->url() ? 'active' : '' }}">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>Approve</p>
+                      </a>
+                    </li>
+                  @endif
+
+                  @if ($USERLOGIN->isAble(['prch-pp-tool-submit']))
+                  <li class="nav-item">
+                    <a href="{{ route('pptool.indexPrch') }}"
+                      class="nav-link {{ route('pptool.indexPrch') == request()->url() ? 'active' : '' }}">
+                      <i class="nav-icon far fa-circle"></i>
+                      <p>Purchasing</p>
+                    </a>
+                  </li>
+                  @endif
+                </ul>
               </li>
             @endif
 

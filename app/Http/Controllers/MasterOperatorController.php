@@ -13,7 +13,7 @@ class MasterOperatorController extends Controller
 {
   public function index()
   {
-    // if (!Auth::user()->isAble(['mas_operator_view'])) return view('error.403');
+    if (!Auth::user()->isAble(['mas_operator_view'])) return view('error.403');
 
     $divisi = DB::table('mas_operators')
       ->selectRaw('distinct divisi')

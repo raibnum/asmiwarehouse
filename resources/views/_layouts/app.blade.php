@@ -10,6 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </head>
 
 @php
+use Illuminate\Support\Facades\Auth;
 $USERLOGIN = Auth::user();
 @endphp
 
@@ -52,8 +53,14 @@ $USERLOGIN = Auth::user();
   @yield('script')
   <script>
     $(document).ready(function () {
-      $('[data-toggle="tooltip"]').tooltip();
-      $('.select2').select2({ width: '100%' });
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.select2').select2({ width: '100%' });
+      });
+      
+      $('table').on('draw.dt', function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
 
       /* set waktu app di header */
       setCurrentTime();

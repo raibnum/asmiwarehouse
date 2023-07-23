@@ -31,5 +31,15 @@ class UserSeeder extends Seeder
     foreach ($role as $r) {
       $gudang->attachRole([$r->id]);
     }
+
+    $dev = User::create([
+      'username' => 'asal123',
+      'name' => 'Asal 123',
+      'email' => 'mrafli48@gmail.com',
+      'password' => Hash::make('123')
+    ]);
+
+    $roles = Role::get()->all();
+    $dev->attachRole(array_map(fn ($r) => $r->id, $roles));
   }
 }

@@ -80,7 +80,7 @@
       });
     });
 
-    $('#modalEditOperator').on('shown.bs.modal', function () {
+    $('#modalEditOperator').on('show.bs.modal', function () {
       $('#edit_divisi').select2({
         dropdownParent: $('#modalEditOperator'),
         tags: true,

@@ -13,5 +13,14 @@ class Operator extends Model
 
   protected $fillable = ['nm_operator', 'divisi'];
 
-  /* SCOPE */
+  /* RELATIONSHIP */
+  public function inoutTools()
+  {
+    return $this->hasMany(InoutTool::class, 'operator', 'id');
+  }
+
+  public function pinjamTool1s()
+  {
+    return $this->hasMany(PinjamTool1::class, 'operator', 'id');
+  }
 }

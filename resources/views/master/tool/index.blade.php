@@ -75,8 +75,6 @@
   </section> <!-- /.content -->
 </div> <!-- /.content-wrapper -->
 
-<!-- Form Redirect -->
-@include('components.form_redirect', ['target' => 'tool.index']);
 <!-- Modal Create -->
 @include('master.popup.modalCreateTool')
 <!-- Modal Edit -->
@@ -88,14 +86,16 @@
   let tableMaster;
 
   $(document).ready(function () {
-    $(function () {
+    $('#modalCreateTool').on('show.bs.modal', function () {
       $('#create_kd_jenis').select2({
         dropdownParent: $('#modalCreateTool'),
         placeholder: 'Jenis',
         tags: true,
         width: '100%'
       });
+    });
 
+    $('#modalEditTool').on('show.bs.modal', function () {
       $('#edit_kd_jenis').select2({
         dropdownParent: $('#modalEditTool'),
         placeholder: 'Jenis',

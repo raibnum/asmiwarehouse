@@ -176,5 +176,73 @@ class RolePermissionSeeder extends Seeder
     ]);
 
     $whs_permintaan_pembelian_tool->attachPermission([$mas_permintaan_pembelian_tool_view->id, $mas_permintaan_pembelian_tool_create->id]);
+
+    $whs_inout_tool = Role::create([
+      'name' => 'whs_inout_tool',
+      'display_name' => 'INOUT TOOL',
+      'description' => 'Untuk mengakses menu inout tool'
+    ]);
+
+    $whs_inout_tool_view = Permission::create([
+      'name' => 'whs-inout-tool-view',
+      'display_name' => 'TRANSAKSI INOUT TOOL VIEW',
+      'description' => 'Untuk melihat menu transaksi inout tool'
+    ]);
+
+    $whs_inout_tool_create = Permission::create([
+      'name' => 'whs-inout-tool-create',
+      'display_name' => 'TRANSAKSI INOUT TOOL CREATE',
+      'description' => 'Untuk CRUD menu transaksi inout tool'
+    ]);
+
+    $whs_inout_tool->attachPermission([$whs_inout_tool_view->id, $whs_inout_tool_create->id]);
+
+    $whs_pp_tool = Role::create([
+      'name' => 'whs_pp_tool',
+      'display_name' => 'PP TOOL',
+      'description' => 'Untuk mengakses menu pp tool'
+    ]);
+
+    $whs_pp_tool_view = Permission::create([
+      'name' => 'whs-pp-tool-view',
+      'display_name' => 'TRANSAKSI PP TOOL VIEW',
+      'description' => 'Untuk melihat menu transaksi pp tool'
+    ]);
+
+    $whs_pp_tool_create = Permission::create([
+      'name' => 'whs-pp-tool-create',
+      'display_name' => 'TRANSAKSI PP TOOL CREATE',
+      'description' => 'Untuk CRUD menu transaksi pp tool'
+    ]);
+
+    $whs_pp_tool->attachPermission([$whs_pp_tool_view->id, $whs_pp_tool_create->id]);
+
+    $whs_pp_tool_appr = Role::create([
+      'name' => 'whs_pp_tool_approve',
+      'display_name' => 'PP TOOL APPROVE',
+      'description' => 'Untuk mengakses menu approve pp tool'
+    ]);
+
+    $whs_pp_tool_approve = Permission::create([
+      'name' => 'whs-pp-tool-approve',
+      'display_name' => 'TRANSAKSI PP TOOL APPROVE',
+      'description' => 'Untuk mengakses menu approve pp tool'
+    ]);
+
+    $whs_pp_tool_appr->attachPermission([$whs_pp_tool_approve->id]);
+
+    $prch_pp_tool = Role::create([
+      'name' => 'prch_pp_tool',
+      'display_name' => 'PP TOOL PURCHASING',
+      'description' => 'Untuk mengakses menu purchasing pp tool'
+    ]);
+
+    $prch_pp_tool_submit = Permission::create([
+      'name' => 'prch-pp-tool-submit',
+      'display_name' => 'TRANSAKSI PP TOOL PURCHASING',
+      'description' => 'Untuk mengakses menu purchasing pp tool'
+    ]);
+
+    $prch_pp_tool->attachPermission([$prch_pp_tool_submit->id]);
   }
 }

@@ -14,21 +14,24 @@
             <label for="create_kd_pinj" class="col-sm-2 col-form-label">Kode</label>
             <div class="col-sm-4">
               <input type="text" name="kd_pinj" id="create_kd_pinj" class="form-control" placeholder="Kode Pinjam"
-                value="{{ $kd_pinj }}" readonly>
+                value="{{ $kd_pinj }}" readonly required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="create_tgl" class="col-sm-2 col-form-label">Tanggal</label>
             <div class="col-sm-4">
-              <input type="date" name="tgl" id="create_tgl" class="form-control">
+              <input type="date" name="tgl" id="create_tgl" class="form-control" required>
+            </div>
+            <div class="col-sm-2">
+              <input type="time" name="jam" id="create_jam" class="form-control" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="create_operator" class="col-sm-2 col-form-label">Operator</label>
             <div class="col-sm-4">
-              <select name="operator" id="create_operator" class="form-control">
+              <select name="operator" id="create_operator" class="form-control" required>
                 <option></option>
                 @foreach ($opt_operator as $operator)
                 <option value="{{ $operator->id }}">{{ $operator->nm_operator . ' # ' . $operator->divisi }}</option>
@@ -37,7 +40,7 @@
             </div>
           </div>
 
-          <table class="table table-striped table-bordered table-hover table-sm w-100" id="table-master">
+          <table class="table table-bordered table-hover table-sm w-100" id="table-create">
             <thead>
               <tr>
                 <th class="text-center" style="width: 50px;">No</th>
@@ -46,7 +49,7 @@
                 <th class="text-center" style="width: 20%;">Jenis</th>
                 <th class="text-center" style="width: 15%;">Qty</th>
                 <th class="text-center" style="width: 50px;">
-                  <button type="button" class="btn btn-xs btn-default text-success">
+                  <button type="button" class="btn btn-xs btn-tool text-success" onclick="addRowCreate();">
                     <i class="fa fa-plus"></i>
                   </button>
                 </th>
@@ -56,12 +59,16 @@
               <tr id="row-create-1">
                 <td class="text-center">1</td>
                 <td>
-                  <select name="kd_tool[]" class="form-control form-control-sm select2-tool" onchange="autoFillTool(this);">
+                  <select name="kd_tool[]" class="form-control form-control-sm select2-tool"
+                    onchange="autoFillTool(this); checkDuplicateTool(this);" required>
+                    <option></option>
                     @foreach ($opt_tool as $tool)
                     <option value="{{ $tool->kd_tool }}" data-nm_tool="{{ $tool->nm_tool }}"
-                      data-jenis="{{ $tool->jenis_tool }}" data-stok="{{ $tool->stok }}">{{ $tool->kd_tool }}</option>
+                      data-jenis="{{ $tool->jenisTool->nm_jenis }}" data-stok="{{ $tool->stok_available }}">{{ $tool->kd_tool }}
+                    </option>
                     @endforeach
                   </select>
+                  <div class="invalid-feedback">Tool sudah dipilih</div>
                 </td>
                 <td>
                   <input type="text" name="nm_tool[]" class="form-control form-control-sm" readonly>
@@ -70,7 +77,14 @@
                   <input type="text" name="jenis_tool[]" class="form-control form-control-sm" readonly>
                 </td>
                 <td>
-                  <input type="number" name="qty_tool[]" class="form-control form-control-sm" min="0" step="">
+                  <input type="number" name="qty_tool[]" class="form-control form-control-sm" min="0" step="1"
+                    onchange="checkMaxValue(this);" required>
+                  <div class="invalid-feedback">Stok kurang</div>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-xs btn-tool text-danger" onclick="deleteRowCreate(1);" disabled>
+                    <i class="fa fa-minus"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>

@@ -13,6 +13,7 @@ class JenisTool extends Model
 	protected $primaryKey = 'kd_jenis';
 	protected $keyType = 'string';
 	public $increment = false;
+	public $timestamps = false;
 
 	public function tools()
 	{

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\JenisTool;
+use App\Models\Operator;
 use App\Models\Tool;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -33,6 +34,19 @@ class WarehouseSeeder extends Seeder
 			'harga' => 10000,
 			'st_aktif' => true,
 			'st_sekali_pakai' => true
+		]);
+
+		Operator::create([
+			'nm_operator' => 'Muhammad Rafli',
+			'divisi' => 'IT'
+		]);
+		Operator::create([
+			'nm_operator' => 'Raihan Ibnu M.',
+			'divisi' => 'Gudang'
+		]);
+		Operator::create([
+			'nm_operator' => 'Jordan Vibesco',
+			'divisi' => 'HR'
 		]);
 	}
 }

@@ -159,6 +159,7 @@ return [
     /*
     * Package Service Providers...
     */
+    Intervention\Image\ImageServiceProvider::class,
     Laravolt\Avatar\ServiceProvider::class,
     Yajra\DataTables\DataTablesServiceProvider::class,
 
@@ -186,6 +187,7 @@ return [
   'aliases' => Facade::defaultAliases()->merge([
     // 'Example' => App\Facades\Example::class,
     'Avatar' => Laravolt\Avatar\Facade::class,
+    'Image' => Intervention\Image\Facades\Image::class,
   ])->toArray(),
 
 ];

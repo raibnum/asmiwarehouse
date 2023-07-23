@@ -50,7 +50,7 @@ return new class extends Migration
     });
 
     Schema::create('tr_pinj_tool1s', function (Blueprint $table) {
-      $table->string('kd_pinj', 13); /* WHSPT07230001 */
+      $table->string('kd_pinj', 13); /* PTWHS07230001 */
       $table->timestamp('tgl');
       $table->bigInteger('operator')->unsigned();
       $table->integer('status')->nullable()->default(0);
@@ -71,6 +71,41 @@ return new class extends Migration
       $table->primary(['kd_pinj', 'kd_tool']);
       $table->foreign('kd_pinj')->references('kd_pinj')->on('tr_pinj_tool1s')->cascadeOnDelete();
       $table->index(['kd_pinj', 'kd_tool']);
+    });
+
+    Schema::create('tr_inout_tools', function (Blueprint $table) {
+      $table->id();
+      $table->string('kd_tool', 50);
+      $table->date('tgl');
+      $table->bigInteger('operator')->unsigned();
+      $table->string('status', 10);
+      $table->integer('qty');
+      $table->integer('harga')->nullable();
+      $table->timestamps();
+
+      $table->foreign('kd_tool')->references('kd_tool')->on('mas_tools');
+      $table->foreign('operator')->references('id')->on('mas_operators');
+    });
+
+    Schema::create('tr_pp_tool1s', function (Blueprint $table) {
+      $table->string('no_pp', 13)->primary(); /* PPWHS07230001 */
+      $table->date('tgl_pp');
+      $table->string('keterangan')->nullable();
+      $table->timestamp('tgl_approve')->nullable();
+      $table->timestamp('submit_prch')->nullable();
+      $table->timestamp('tgl_receive')->nullable();
+      $table->string('file')->nullable();
+      $table->timestamps();
+    });
+
+    Schema::create('tr_pp_tool2s', function (Blueprint $table) {
+      $table->string('no_pp', 13);
+      $table->string('kd_tool', 50);
+      $table->integer('qty');
+
+      $table->primary(['no_pp', 'kd_tool']);
+      $table->foreign('no_pp')->references('no_pp')->on('tr_pp_tool1s');
+      $table->foreign('kd_tool')->references('kd_tool')->on('mas_tools');
     });
   }
 

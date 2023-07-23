@@ -18,6 +18,7 @@ class Tool extends Model
 	public $increment = false;
 
 	protected $fillable = ['kd_tool', 'nm_tool', 'kd_jenis', 'stok', 'stok_minima', 'harga', 'st_aktif'];
+	protected $appends = ['stok_available'];
 
 	/* ACCESSOR & MUTATOR*/
 	/**
@@ -26,27 +27,37 @@ class Tool extends Model
 	 */
 	protected function stokAvailable(): Attribute
 	{
-		$stok = $this->stok - array_sum($this->pinjamTool2()->pluck('qty')->all());
-		return new Attribute(
+		$stok = $this->stok - array_sum($this->pinjamTool2s()->pluck('qty')->all());
+		return Attribute::make(
 			get: fn () => $stok,
 		);
 	}
 
 	/* RELATIONSHIP */
+	public function inoutTools()
+	{
+		return $this->hasMany(InoutTool::class, 'kd_tool', 'kd_tool');
+	}
+
 	public function jenisTool()
 	{
 		return $this->belongsTo(JenisTool::class, 'kd_jenis', 'kd_jenis');
 	}
 
-	public function pinjamTool2()
+	public function pinjamTool2s()
 	{
 		return $this->hasMany(PinjamTool2::class, 'kd_tool', 'kd_tool');
+	}
+
+	public function ppTool2s()
+	{
+		return $this->hasMany(PpTool2::class, 'kd_tool', 'kd_tool');
 	}
 
 	/* SCOPE */
 	public function scopeAktif(Builder $query)
 	{
-		$query->where('st_aktif', true);
+		return $query->where('st_aktif', 1);
 	}
 
 	/* CUSTOM */

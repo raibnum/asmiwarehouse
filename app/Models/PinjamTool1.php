@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PinjamTool1 extends Model
@@ -16,14 +18,26 @@ class PinjamTool1 extends Model
   protected $keyType = 'string';
   public $increment = false;
 
+  protected $fillable = ['kd_pinj', 'tgl', 'operator', 'status'];
+  protected $appends = ['status_text'];
+
+  /* ACCESSOR & MUTATOR */
+  public function statusText(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->getStatus()
+    );
+  }
+
+  /* RELATIONSHIP */
+  public function opr()
+  {
+    return $this->belongsTo(Operator::class, 'operator', 'id');
+  }
+
   public function pinjamTool2s()
   {
     return $this->hasMany(PinjamTool2::class, 'kd_pinj', 'kd_pinj');
-  }
-
-  public function getStatus()
-  {
-    return static::status()[$this->status];
   }
 
   /* SCOPE */
@@ -40,12 +54,18 @@ class PinjamTool1 extends Model
   }
 
   /* CUSTOM */
+  public function getStatus()
+  {
+    return static::status()[$this->status];
+  }
+
   public static function newKodePinjam()
   {
     /* PTWHS07230001 */
-    $last = self::orderBy('kd_pinj', 'desc')->first();
-
-    $periode = Carbon::now()->format('Ym');
+    $periode = Carbon::now()->format('my');
+    $last = self::where(DB::raw("date_format(tgl, '%m%y')"), $periode)
+      ->orderBy('kd_pinj', 'desc')
+      ->first();
 
     if ($last == null) {
       $no = 0;
@@ -59,5 +79,24 @@ class PinjamTool1 extends Model
   public static function status()
   {
     return [0 => 'BELUM DIKEMBALIKAN', 1 => 'DIKEMBALIKAN SEBAGIAN', 2 => 'SELESAI'];
+  }
+
+  public function udpateStatus()
+  {
+    $status = 0;
+    $jumlah = 0;
+    $p2ts = $this->pinjamTool2s->all();
+    $total_tool = count($p2ts);
+
+    foreach ($p2ts as $p2t) {
+      if ($p2t->tgl_kembali != null) {
+        $jumlah += 1;
+        $status = 1;
+      }
+    }
+
+    if ($jumlah == $total_tool) $status = 2;
+
+    $this->update(['status' => $status]);
   }
 }

@@ -6,7 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PpToolController;
 use App\Http\Controllers\DatatableController;
+use App\Http\Controllers\InoutToolController;
 use App\Http\Controllers\MasterToolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PinjamToolController;
@@ -69,6 +71,19 @@ Route::group(['middleware' => ['auth']], function () {
     // transaksi
     Route::resource('pinjtool', PinjamToolController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('pinjtool/dashboard', [PinjamToolController::class, 'dashboard'])->name('pinjtool.dashboard');
+
+    Route::resource('inouttool', InoutToolController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('inouttool/dashboard', [InoutToolController::class, 'dashboard'])->name('inouttool.dashboard');
+
+    Route::resource('pptool', PpToolController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('pptool/dashboard', [PpToolController::class, 'dashboard'])->name('pptool.dashboard');
+    Route::delete('pptool/item/{no_pp}/{kd_tool}', [PpToolController::class, 'destroyItem'])->name('pptool.destroyItem');
+
+    Route::get('pptol/approve', [PpToolController::class, 'indexApprove'])->name('pptool.indexApprove');
+    Route::patch('pptool/{no_pp}/approve', [PpToolController::class, 'approve'])->name('pptool.approve');
+    Route::get('pptool/prch', [PpToolController::class, 'indexPrch'])->name('pptool.indexPrch');
+    Route::post('pptool/{no_pp}/prch', [PpToolController::class, 'prch'])->name('pptool.prch');
+    Route::patch('pptol/{no_pp}/receive', [PpToolController::class, 'receive'])->name('pptool.receive');
   });
 
   // datatable
