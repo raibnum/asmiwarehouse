@@ -12,14 +12,22 @@
 Untuk menjalankan project ini dalam _environment_ Anda, silahkan ikuti langkah-langkah di bawah ini.
 - _Download_ dan _Extract_ project ini ke dalam komputer Anda.
 - Buka _terminal_ atau _command prompt_ dan arahkan _directory_ ke project ini.
-`cd C:/path/to/directory`
+```
+cd C:/path/to/directory
+```
 - Install semua _dependencies_. Pastikan Anda terhubung ke internet dan Composer sudah terinstall.
-`composer install`
+````
+composer install
+````
 - Konfigurasi file _.env_.
 - _Generate Key_.
-`php artisan key:generate`
+```
+php artisan key:generate
+```
 - Jalankan _migration_ dan _seed_.
-`php artisan migrate:fresh --seed`
+```
+php artisan migrate:fresh --seed
+```
 
 ## About Laravel
 
