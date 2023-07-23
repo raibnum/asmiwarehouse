@@ -7,6 +7,18 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Contributor
+
+Thanks to people who've been working for this project
+- :sunglasses: rafleh
+  - [Github](https://github.com/mondees).
+  - [Instagram](https://www.instagram.com/rafleh).
+- :star_struck: jvibesco
+  - [Instagram](https://www.instagram.com/jvibesco).
+- :partying_face: raibnum
+  - [Instagram](https://www.instagram.com/raibnum_).
+- :factory: PT Aristo Satria Mandiri Indonesia
+
 ## Start This Project On Your Own Environment
 
 Untuk menjalankan project ini dalam _environment_ Anda, silahkan ikuti langkah-langkah di bawah ini.
