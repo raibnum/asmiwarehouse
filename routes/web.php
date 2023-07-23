@@ -13,6 +13,7 @@ use App\Http\Controllers\MasterToolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PinjamToolController;
 use App\Http\Controllers\MasterOperatorController;
+use App\Models\InoutTool;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +87,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('pptol/{no_pp}/receive', [PpToolController::class, 'receive'])->name('pptool.receive');
   });
 
+  Route::prefix('report')->group(function () {
+    Route::get('inouttool', [InoutToolController::class, 'indexReport'])->name('inouttool.indexReport');
+    Route::get('inouttool/pdf/{tgl_awal}/{tgl_akhir}', [InoutToolController::class, 'pdf'])->name('inouttool.pdf');
+  });
+
   // datatable
   Route::prefix('datatable')->group(function () {
     Route::get('operator', [DatatableController::class, 'operator'])->name('datatable.operator');
@@ -94,17 +100,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tool', [DatatableController::class, 'tool'])->name('datatable.tool');
     Route::get('user', [DatatableController::class, 'user'])->name('datatable.user');
   });
-
-  // redirect
-  Route::get('redirect', function (Request $request) {
-    $target = $request->target ?? 'home';
-
-    $status = $request->status ?? 'success';
-    $message = $request->message ?? 'Aksi berhasil dilakukan';
-
-    $request->session()->flash('alert-status', $status);
-    $request->session()->flash('alert-message', $message);
-
-    return redirect()->route($target);
-  })->name('redirect');
 });

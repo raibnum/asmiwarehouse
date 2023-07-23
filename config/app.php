@@ -159,6 +159,7 @@ return [
     /*
     * Package Service Providers...
     */
+    Barryvdh\DomPDF\ServiceProvider::class,
     Intervention\Image\ImageServiceProvider::class,
     Laravolt\Avatar\ServiceProvider::class,
     Yajra\DataTables\DataTablesServiceProvider::class,
@@ -188,6 +189,7 @@ return [
     // 'Example' => App\Facades\Example::class,
     'Avatar' => Laravolt\Avatar\Facade::class,
     'Image' => Intervention\Image\Facades\Image::class,
+    'PDF' => Barryvdh\DomPDF\Facade::class,
   ])->toArray(),
 
 ];

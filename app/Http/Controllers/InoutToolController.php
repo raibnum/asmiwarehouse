@@ -212,4 +212,36 @@ class InoutToolController extends Controller
       ], 500);
     }
   }
+
+  public function indexReport()
+  {
+    if (!Auth::user()->isAble(['whs-inout-tool-report'])) return view('error.403');
+
+    return view('report.inout_tool.index');
+  }
+
+  public function pdf($tgl_awal, $tgl_akhir)
+  {
+    if (!Auth::user()->isAble(['whs-inout-tool-report'])) return view('error.403');
+
+    $tgl_awal = base64_decode($tgl_awal);
+    $tgl_akhir = base64_decode($tgl_akhir);
+
+    $inout = InoutTool::periode($tgl_awal, $tgl_akhir)
+      ->with(['opr', 'tool', 'tool.jenisTool'])
+      ->orderBy(DB::raw("tgl, created_at"))
+      ->get()
+      ->all();
+
+    $tgl_awal = Carbon::parse($tgl_awal)->format('d/m/Y');
+    $tgl_akhir = Carbon::parse($tgl_akhir)->format('d/m/Y');
+
+    $pdf = \PDF::loadView('report.inout_tool.pdf', [
+      'inout' => $inout,
+      'tgl_awal' => $tgl_awal,
+      'tgl_akhir' => $tgl_akhir
+    ]);
+
+    return $pdf->setPaper('A4')->stream();
+  }
 }

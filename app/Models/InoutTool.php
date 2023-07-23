@@ -11,7 +11,7 @@ class InoutTool extends Model
   use HasFactory;
 
   protected $table = 'tr_inout_tools';
-  protected $fillable = ['kd_tool', 'tgl', 'operator', 'status', 'qty'];
+  protected $fillable = ['kd_tool', 'tgl', 'operator', 'status', 'qty', 'harga'];
 
   /* RELATIONSHIP */
   public function tool()

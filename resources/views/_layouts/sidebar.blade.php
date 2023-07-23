@@ -96,7 +96,7 @@
         <!-- END MASTER -->
 
         <!-- TRANSAKSI -->
-        @if ($USERLOGIN->isAble(['whs-pinj-tool*', 'whs-inout-tool*']))
+        @if ($USERLOGIN->isAble(['whs-pinj-tool*', 'whs-inout-tool*', 'whs-pp-tool*', 'prch-pp-tool*']))
           <li class="nav-header font-weight-bold">TRANSAKSI</li>
 
             @if ($USERLOGIN->isAble(['whs-pinj-tool-*']))
@@ -166,6 +166,23 @@
           </li>
         @endif
         <!-- END TRANSAKSI -->
+
+        <!-- REPORT -->
+        @if ($USERLOGIN->isAble(['whs-inout-tool-report']))
+          <li class="nav-header font-weight-bold">REPORT</li>
+
+          @if ($USERLOGIN->isAble(['whs-inout-tool-report']))
+            <li class="nav-item">
+              <a href="{{ route('inouttool.indexReport') }}"
+                class="nav-link {{ route('inouttool.indexReport') == request()->url() ? 'active' : '' }}">
+                <i class="nav-icon fas fa-file"></i>
+                <p>Inout Tool</p>
+              </a>
+            </li>
+          @endif
+
+        @endif
+        <!-- END REPORT -->
 
       </ul>
     </nav>

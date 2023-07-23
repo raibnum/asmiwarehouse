@@ -195,7 +195,13 @@ class RolePermissionSeeder extends Seeder
       'description' => 'Untuk CRUD menu transaksi inout tool'
     ]);
 
-    $whs_inout_tool->attachPermission([$whs_inout_tool_view->id, $whs_inout_tool_create->id]);
+    $whs_inout_tool_report = Permission::create([
+      'name' => 'whs-inout-tool-report',
+      'display_name' => 'TRANSAKSI INOUT TOOL REPORT',
+      'description' => 'Untuk mengakses menu report inout tool'
+    ]);
+
+    $whs_inout_tool->attachPermission([$whs_inout_tool_view->id, $whs_inout_tool_create->id, $whs_inout_tool_report->id]);
 
     $whs_pp_tool = Role::create([
       'name' => 'whs_pp_tool',
