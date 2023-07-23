@@ -63,10 +63,27 @@
           </div>
 
           <div class="form-group row">
+            <label for="create_st_sekali_pakai" class="col-sm-2 col-form-label">Status Sekali Pakai</label>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline icheck-maroon">
+                <input type="radio" name="st_sekali_pakai" id="create_st_sekali_pakai_true" class="form-check-input"
+                  value="T" checked>
+                <label class="form-check-label" for="create_st_sekali_pakai_true">Ya</label>
+              </div>
+              <div class="form-check form-check-inline icheck-maroon">
+                <input type="radio" name="st_sekali_pakai" id="create_st_sekali_pakai_false" class="form-check-input"
+                  value="F">
+                <label class="form-check-label" for="create_st_sekali_pakai_false">Tidak</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <label for="create_st_aktif" class="col-sm-2 col-form-label">Status Aktif</label>
             <div class="col-sm-4">
               <div class="form-check form-check-inline icheck-maroon">
-                <input type="radio" name="st_aktif" id="create_st_aktif_true" class="form-check-input" value="T" checked>
+                <input type="radio" name="st_aktif" id="create_st_aktif_true" class="form-check-input" value="T"
+                  checked>
                 <label class="form-check-label" for="create_st_aktif_true">Ya</label>
               </div>
               <div class="form-check form-check-inline icheck-maroon">

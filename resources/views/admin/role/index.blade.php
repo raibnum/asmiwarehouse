@@ -34,12 +34,14 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['admin-role-create']))
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-add">Add</label>
                     <a href="{{ route('role.create') }}" class="btn btn-success form-control" id="btn-add">Add</a>
                   </div>
                 </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table table-striped table-bordered table-sm w-100" id="table-master">
                 <thead>
@@ -48,6 +50,7 @@
                     <th class="text-center" style="width: 25%;">Role</th>
                     <th class="text-center">Display Name</th>
                     <th class="text-center" style="width: 20%;">Description</th>
+                    <th class="text-center">Permission</th>
                     <th class="text-center" style="width: 10%;">Action</th>
                   </tr>
                 </thead>
@@ -126,7 +129,7 @@
         "targets": 0,
       }, {
         "className": "dt-center",
-        "targets": [0, 4]
+        "targets": [0, 5]
       }],
       "aLengthMenu": [
         [5, 10, 25, 50, 75, 100, -1],
@@ -144,6 +147,7 @@
         { data: 'name', name: 'name' },
         { data: 'display_name', name: 'display_name' },
         { data: 'description', name: 'description' },
+        { data: 'permissions', name: 'permissions' },
         { data: 'action', name: 'action', searchable: false, orderable: false, },
       ],
       rowId: role => `row-${role.id}`

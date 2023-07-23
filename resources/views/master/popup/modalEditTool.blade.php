@@ -15,8 +15,8 @@
           <div class="form-group row">
             <label for="edit_kd_tool" class="col-sm-2 col-form-label">Kode (*)</label>
             <div class="col-sm-4">
-              <input type="text" name="kd_tool" id="edit_kd_tool" class="form-control" placeholder="Kode"
-                maxlength="50" required readonly>
+              <input type="text" name="kd_tool" id="edit_kd_tool" class="form-control" placeholder="Kode" maxlength="50"
+                required readonly>
             </div>
           </div>
 
@@ -60,6 +60,22 @@
             <div class="col-sm-4">
               <input type="number" name="harga" id="edit_harga" class="form-control" placeholder="0" min="0"
                 step="1000">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="edit_st_sekali_pakai" class="col-sm-2 col-form-label">Status Sekali Pakai</label>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline icheck-maroon">
+                <input type="radio" name="st_sekali_pakai" id="edit_st_sekali_pakai_true" class="form-check-input"
+                  value="T" checked>
+                <label class="form-check-label" for="edit_st_sekali_pakai_true">Ya</label>
+              </div>
+              <div class="form-check form-check-inline icheck-maroon">
+                <input type="radio" name="st_sekali_pakai" id="edit_st_sekali_pakai_false" class="form-check-input"
+                  value="F">
+                <label class="form-check-label" for="edit_st_sekali_pakai_false">Tidak</label>
+              </div>
             </div>
           </div>
 

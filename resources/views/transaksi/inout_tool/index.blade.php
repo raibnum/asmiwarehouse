@@ -57,13 +57,15 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['whs-inout-tool-create']))
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-create">Add</label>
                     <button type="button" class="btn btn-success form-control"
                       onclick="popupModalCreate();">Add</button>
                   </div>
-                </div>
+                </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table-bordered table-hover table-sm w-100" id="table-master">
                 <thead>
@@ -278,7 +280,7 @@
     $('#create_jenis_tool').val('');
     $('#create_harga').val('');
     $('#create_operator').val('').change();
-    $('#modalCreateInoutTool input:checkbox:checked').attr('checked', false);
+    $('#modalCreateInoutTool input:checkbox:checked').prop('checked', false);
     $('#create_qty').val();
   }
 
@@ -291,7 +293,7 @@
 
     $('#edit_kd_tool').val(data.kd_tool).change();
     $('#edit_operator').val(data.opr.id).change();
-    $(`#edit_status_${data.status.toLowerCase()}`).attr('checked', true);
+    $(`#edit_status_${data.status.toLowerCase()}`).prop('checked', true);
     $('#edit_qty').val(data.qty);
     $('#modalEditInoutTool .modal-footer button:eq(1)').attr('onclick', `updateInoutTool(${data.id});`);
 

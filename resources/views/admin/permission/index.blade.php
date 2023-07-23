@@ -34,12 +34,12 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
-                <div class="col-sm-2">
+                {{-- <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-add">Add</label>
                     <a href="{{ route('permission.create') }}" class="btn btn-success form-control" id="btn-add">Add</a>
                   </div>
-                </div> <!-- /.col -->
+                </div> <!-- /.col --> --}}
               </div> <!-- /.row -->
               <table class="table table-striped table-bordered table-sm w-100" id="table-master">
                 <thead>

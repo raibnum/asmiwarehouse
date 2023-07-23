@@ -36,4 +36,17 @@ class InoutTool extends Model
       return $q->where('status', $status);
     });
   }
+
+  /* CUSTOM */
+  public static function totalKeluar()
+  {
+    $inout = self::where('status', 'KELUAR')->pluck('qty')->all();
+    return array_sum($inout);
+  }
+
+  public static function totalMasuk()
+  {
+    $inout = self::where('status', 'MASUK')->pluck('qty')->all();
+    return array_sum($inout);
+  }
 }

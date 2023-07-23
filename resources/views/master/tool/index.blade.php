@@ -43,6 +43,7 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['whs-tool-create']))
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-add">Add</label>
@@ -50,6 +51,7 @@
                       onclick="popupModalCreate();">Add</button>
                   </div>
                 </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table tale-striped table-bordered table-sm w-100" id="table-master">
                 <thead>
@@ -102,6 +104,8 @@
         tags: true,
         width: '100%'
       });
+
+      $('#form-edit input[name="_method"]').val('put');
     });
 
     initTableMaster();
@@ -144,7 +148,7 @@
 
         $('#modalCreateTool').modal('hide');
         $('#modalCreateTool #form-create :input').val('');
-        $('#modalCreateTool #form-create #create_st_aktif_true').attr('checked', true);
+        $('#modalCreateTool #form-create #create_st_aktif_true').prop('checked', true);
 
         Swal.fire(res.title, res.message, res.status);
         changeOptionJenis(res.data.jenis);
@@ -192,7 +196,7 @@
 
         $('#modalEditTool').modal('hide');
         $('#modalEditTool #form-edit :input').val('');
-        $('#modalEditTool #form-edit #edit_st_aktif_true').attr('checked', true);
+        $('#modalEditTool #form-edit #edit_st_aktif_true').prop('checked', true);
 
         Swal.fire(res.title, res.message, res.status);
         changeOptionJenis(res.data.jenis);
@@ -269,9 +273,14 @@
     $('#edit_stok_minimal').val(data.stok_minimal);
     $('#edit_harga').val(data.harga);
     if (data.st_aktif == true) {
-      $('#edit_st_aktif_true').attr('checked', true);
+      $('#edit_st_aktif_true').prop('checked', true);
     } else {
-      $('#edit_st_aktif_false').attr('checked', true);
+      $('#edit_st_aktif_false').prop('checked', true);
+    }
+    if (data.st_sekali_pakai == true) {
+      $('#edit_st_sekali_pakai_true').prop('checked', true);
+    } else {
+      $('#edit_st_sekali_pakai_false').prop('checked', true);
     }
 
     $('#modalEditTool .modal-footer button:eq(1)').attr('onclick', `updateTool('${kd_tool}');`);

@@ -81,11 +81,18 @@
     </div> <!-- /.container-fluid -->
   </section> <!-- /.content -->
 </div> <!-- /.content-wrapper -->
+
+<!-- Modal Detail -->
+@include('transaksi.popup.modalDetailPpTool')
+<!-- Modal Invoice -->
+@include('transaksi.popup.modalInvoicePpTool')
+
 @endsection
 
 @section('script')
 <script>
   let tableMaster;
+  let opt_tool = {!! json_encode($opt_tool) !!};
 
   $(document).ready(function () {
     initTableMaster();
@@ -148,8 +155,97 @@
   }
 
   /**
+   * popup
+   */
+  function popupModalDetail(el) {
+    let row = $(el).closest('tr');
+    let data = tableMaster.row(row).data();
+
+    let no_pp = data.no_pp || '';
+    let tgl_pp = moment(data.tgl_pp).format('YYYY-MM-DD');
+    let keterangan = data.keterangan || '';
+    let ppt2s = data.pp_tool2s || [];
+
+    $('#detail_no_pp').val(no_pp);
+    $('#detail_tgl_pp').val(tgl_pp);
+    $('#detail_keterangan').val(keterangan);
+
+    $('#table-detail tbody').html('');
+    ppt2s.forEach((ppt2, i) => {
+      $('#table-detail tbody').append(rowDetail(i + 1, ppt2));
+    });
+
+    $('#table-detail tbody .select2-tool').trigger('change');
+
+    $('#modalDetailPpTool').modal('show');
+  }
+
+  function rowDetail(index, ppt2 = null) {
+    let kd_tool = '';
+    let qty = '';
+
+    if (ppt2 != null) {
+      kd_tool = ppt2.kd_tool || '';
+      qty = ppt2.qty || '';
+    }
+    return `
+      <tr id="row-edit-${index}">
+        <td class="text-center">${index}</td>
+        <td>
+          <select name="kd_tool[]" class="form-control form-control-sm select2-tool" onchange="autoFillTool(this);" disabled>
+            <option></option>
+            ${opt_tool.map(opt => {
+              return `
+                <option value="${opt.kd_tool}" data-nm_tool="${opt.nm_tool}" data-jenis="${opt.jenis_tool.nm_jenis}" ${kd_tool == opt.kd_tool ? 'selected' : ''}>${opt.kd_tool}</option>
+              `;
+            }).join('')}
+          </select>
+        </td>
+        <td>
+          <input type="text" name="nm_tool[]" class="form-control form-control-sm" placeholder="Nama Tool" readonly>
+        </td>
+        <td>
+          <input type="text" name="jenis_tool[]" class="form-control form-control-sm" placeholder="Jenis Tool" readonly>
+        </td>
+        <td>
+          <input type="number" name="qty[]" class="form-control form-control-sm" value="${qty}" readonly>
+        </td>
+      </tr>
+    `;
+  }
+
+  function popupModalInvoice(no_pp) {
+    let url = "{{ route('pptool.getInvoice', 'param') }}";
+    url = url.replace('param', btoa(no_pp));
+
+    $('#loading').show();
+    $.get(url, res => {
+      $('#loading').hide();
+      
+      let invoice = res.data.invoice;
+
+      $('#modalInvoicePpTool #invoice-container').html(invoice);
+      $('#modalInvoicePpTool').modal('show');
+    }).fail(xhr => {
+      $('#loading').hide();
+      let res = xhr.responseJSON || {};
+      Swal.fire(res.title || 'Failed', res.message || 'Terjadi kesalahan pada system, harap coba lagi', res.status || 'error');
+    });
+  }
+
+  /**
    * utility
    */
+  function autoFillTool(el) {
+    let selected = $(el).find('option:selected');
+    let nm_tool = selected.data('nm_tool');
+    let jenis = selected.data('jenis');
+
+    let tr = $(el).closest('tr');
+    tr.find('td:eq(2) input').val(nm_tool);
+    tr.find('td:eq(3) input').val(jenis);
+  }
+
   function reloadTableMaster() {
     tableMaster.ajax.reload();
   }

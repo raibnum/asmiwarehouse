@@ -76,10 +76,6 @@ class User extends Authenticatable
     return $status;
   }
 
-  public function isRole(array| string $roles)
-  {
-    //
-  }
 
   /* avatar */
   public function avatar()

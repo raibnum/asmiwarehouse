@@ -41,4 +41,21 @@ class Role extends Model
       ->orderBy('p.display_name')
       ->get();
   }
+
+  public static function roleWithUser($user_id)
+  {
+    $role = self::all();
+    foreach ($role as $r) {
+      $role_user = DB::table('role_user as ru')
+        ->join('roles as r', 'r.id', '=', 'ru.role_id')
+        ->where('ru.role_id', $r->id)
+        ->where('ru.user_id', $user_id)
+        ->orderBy('r.display_name')
+        ->first();
+
+      $r->selected = !is_null($role_user) ? true : false;
+    }
+
+    return $role;
+  }
 }

@@ -48,34 +48,40 @@
         <!-- ADMIN -->
         @if ($USERLOGIN->isAble(['admin-*']))
           <li class="nav-header font-weight-bold">ADMIN</li>
-          <li class="nav-item">
-            <a href="{{ route('user.index') }}"
-              class="nav-link {{ route('user.index') == request()->url() ? 'active' : '' }}">
-              <i class="nav-icon fas fa-users"></i>
-              <p>User</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('role.index') }}"
-              class="nav-link {{ route('role.index') == request()->url() ? 'active' : '' }}">
-              <i class="nav-icon fas fa-id-card"></i>
-              <p>Role</p>
-            </a>
-          </li>
-          <li class="nav-item">
+
+          @if ($USERLOGIN->isAble(['admin-user-*']))
+            <li class="nav-item">
+              <a href="{{ route('user.index') }}"
+                class="nav-link {{ route('user.index') == request()->url() ? 'active' : '' }}">
+                <i class="nav-icon fas fa-users"></i>
+                <p>User</p>
+              </a>
+            </li>
+          @endif
+
+          @if ($USERLOGIN->isAble(['admin-role-*']))
+            <li class="nav-item">
+              <a href="{{ route('role.index') }}"
+                class="nav-link {{ route('role.index') == request()->url() ? 'active' : '' }}">
+                <i class="nav-icon fas fa-id-card"></i>
+                <p>Role</p>
+              </a>
+            </li>
+          @endif
+          {{-- <li class="nav-item">
             <a href="{{ route('permission.index') }}"
               class="nav-link {{ route('permission.index') == request()->url() ? 'active' : '' }}">
               <i class="nav-icon fas fa-id-badge"></i>
               <p>Permission</p>
             </a>
-          </li>
+          </li> --}}
         @endif
         <!-- END ADMIN -->
 
         <!-- MASTER -->
         @if($USERLOGIN->isAble(['whs-operator-*', 'whs-tool-*']))
           <li class="nav-header font-weight-bold">MASTER</li>
-          @if ($USERLOGIN->isAble(['whs-operator-*']))
+          @if ($USERLOGIN->isAble(['whs-operator-view', 'whs-operator-create']))
             <li class="nav-item">
               <a href="{{ route('operator.index') }}"
                 class="nav-link {{ route('operator.index') == request()->url() ? 'active' : '' }}">
@@ -84,7 +90,7 @@
               </a>
             </li>
           @endif
-          @if ($USERLOGIN->isAble(['whs-tool-*']))
+          @if ($USERLOGIN->isAble(['whs-tool-view', 'whs-tool-create']))
             <li class="nav-item">
               <a href="{{ route('tool.index') }}" class="nav-link {{ route('tool.index') == request()->url() ? 'active' : '' }}">
                 <i class="nav-icon fas fa-toolbox"></i>
@@ -99,7 +105,7 @@
         @if ($USERLOGIN->isAble(['whs-pinj-tool*', 'whs-inout-tool*', 'whs-pp-tool*', 'prch-pp-tool*']))
           <li class="nav-header font-weight-bold">TRANSAKSI</li>
 
-            @if ($USERLOGIN->isAble(['whs-pinj-tool-*']))
+            @if ($USERLOGIN->isAble(['whs-pinj-tool-view', 'whs-pinj-tool-create']))
               <li class="nav-item">
                 <a href="{{ route('pinjtool.index') }}"
                   class="nav-link {{ route('pinjtool.index') == request()->url() ? 'active' : '' }}">
@@ -109,7 +115,7 @@
               </li>
             @endif
               
-            @if ($USERLOGIN->isAble(['whs-inout-tool-*']))
+            @if ($USERLOGIN->isAble(['whs-inout-tool-view', 'whs-inout-tool-create']))
               <li class="nav-item">
                 <a href="{{ route('inouttool.index') }}"
                   class="nav-link {{ route('inouttool.index') == request()->url() ? 'active' : '' }}">
@@ -119,7 +125,7 @@
               </li>
             @endif
 
-            @if ($USERLOGIN->isAble(['whs-pp-tool-*']))
+            @if ($USERLOGIN->isAble(['whs-pp-tool-*', 'prch-pp-tool-submit']))
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-receipt"></i>

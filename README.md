@@ -11,12 +11,12 @@
 
 Thanks to people who've been working for this project
 - :sunglasses: rafleh
-  - [Github](https://github.com/mondees).
-  - [Instagram](https://www.instagram.com/rafleh).
+  - [Github](https://github.com/mondees)
+  - [Instagram](https://www.instagram.com/rafleh)
 - :star_struck: jvibesco
-  - [Instagram](https://www.instagram.com/jvibesco).
+  - [Instagram](https://www.instagram.com/jvibesco)
 - :partying_face: raibnum
-  - [Instagram](https://www.instagram.com/raibnum_).
+  - [Instagram](https://www.instagram.com/raibnum_)
 - :factory: PT Aristo Satria Mandiri Indonesia
 
 ## Start This Project On Your Own Environment

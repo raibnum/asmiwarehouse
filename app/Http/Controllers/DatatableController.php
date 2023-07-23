@@ -9,6 +9,7 @@ use App\Models\Operator;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class DatatableController extends Controller
 {
@@ -23,6 +24,8 @@ class DatatableController extends Controller
 
     return DataTables::of($operator)
       ->addColumn('action', function ($operator) {
+        if (!Auth::user()->isAble(['whs-operator-create'])) return '';
+
         return '
           <button type="button" class="btn btn-xs btn-success" onclick="popupModalEdit(\'' . $operator->id . '\');" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>
@@ -42,6 +45,8 @@ class DatatableController extends Controller
 
     return DataTables::of($permission)
       ->addColumn('action', function ($permission) {
+        if (!Auth::user()->isAble(['admin-permission-create'])) return '';
+
         return '
           <a href="' . route('permission.edit', base64_encode($permission->id)) . '" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>
@@ -60,7 +65,14 @@ class DatatableController extends Controller
     $role = Role::orderBy('display_name')->get()->all();
 
     return DataTables::of($role)
+      ->addColumn('permissions', function ($role) {
+        $permissions = $role->permissions()->pluck('name')->all();
+
+        return join(' | ', $permissions);
+      })
       ->addColumn('action', function ($role) {
+        if (!Auth::user()->isAble(['admin-role-create'])) return '';
+
         return '
           <a href="' . route('role.edit', base64_encode($role->id)) . '" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>
@@ -79,8 +91,8 @@ class DatatableController extends Controller
     $st_aktif = $request->st_aktif ?? true;
 
     $tool = Tool::when($st_aktif != 'ALL', function ($coll) use ($st_aktif) {
-        return $coll->where('st_aktif', $st_aktif);
-      })
+      return $coll->where('st_aktif', $st_aktif);
+    })
       ->orderBy('kd_jenis')
       ->orderBy('kd_tool')
       ->get()->all();
@@ -101,6 +113,8 @@ class DatatableController extends Controller
         return $tool->jenisTool->nm_jenis;
       })
       ->addColumn('action', function ($tool) {
+        if (!Auth::user()->isAble(['whs-tool-create'])) return '';
+
         return '
           <button type="button" class="btn btn-xs btn-success" onclick="popupModalEdit(\'' . $tool->kd_tool . '\');" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>
@@ -125,6 +139,8 @@ class DatatableController extends Controller
         return join(' | ', $roles);
       })
       ->addColumn('action', function ($user) {
+        if (!Auth::user()->isAble(['admin-user-create'])) return '';
+
         return '
           <a href="' . route('user.edit', base64_encode($user->id)) . '" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>

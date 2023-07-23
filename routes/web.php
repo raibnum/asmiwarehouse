@@ -54,8 +54,8 @@ Route::group(['middleware' => ['guest']], function () {
 /* ADMIN */
 Route::group(['middleware' => ['auth']], function () {
   Route::prefix('admin')->group(function () {
-    Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'udpate', 'destroy']);
-    Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'edit', 'udpate', 'destroy']);
+    Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('permission', PermissionController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
   });
 });
@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pptool/prch', [PpToolController::class, 'indexPrch'])->name('pptool.indexPrch');
     Route::post('pptool/{no_pp}/prch', [PpToolController::class, 'prch'])->name('pptool.prch');
     Route::patch('pptol/{no_pp}/receive', [PpToolController::class, 'receive'])->name('pptool.receive');
+    Route::get('pptool/{no_pp}/invoice', [PpToolController::class, 'getInvoice'])->name('pptool.getInvoice');
   });
 
   Route::prefix('report')->group(function () {

@@ -85,7 +85,6 @@ class PpTool1 extends Model
 		return public_path() . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . 'pp_tool' . DIRECTORY_SEPARATOR . $namaFile;
 	}
 
-
 	public static function newNoPp()
 	{
 		$periode = Carbon::now()->format('my');
@@ -105,5 +104,11 @@ class PpTool1 extends Model
 	public static function status()
 	{
 		return ['INPUT', 'APPROVE', 'BOUGHT', 'RECEIVE'];
+	}
+
+	public static function totalPp()
+	{
+		$pp = self::all();
+		return count($pp);
 	}
 }

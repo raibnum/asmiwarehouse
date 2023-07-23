@@ -15,6 +15,8 @@ class JenisTool extends Model
 	public $increment = false;
 	public $timestamps = false;
 
+	protected $fillable = ['kd_jenis', 'nm_jenis'];
+
 	public function tools()
 	{
 		return $this->hasMany(Tool::class, 'kd_jenis', 'kd_jenis');

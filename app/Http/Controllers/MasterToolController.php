@@ -44,6 +44,13 @@ class MasterToolController extends Controller
 				$st_aktif = false;
 			}
 
+			$st_sekali_pakai = trim($data['st_sekali_pakai']) != '' ? trim($data['st_sekali_pakai']) : true;
+			if ($st_sekali_pakai == 'T') {
+				$st_sekali_pakai = true;
+			} else if ($st_sekali_pakai == 'F') {
+				$st_sekali_pakai = false;
+			}
+
 			if ($kd_tool == null || $nm_tool == null || $kd_jenis == null) throw new \Exception('Kode, nama, dan jenis tidak boleh kosong');
 
 			DB::beginTransaction();
@@ -64,6 +71,7 @@ class MasterToolController extends Controller
 				'stok_minimal' => $stok_minimal,
 				'harga' => $harga,
 				'st_aktif' => $st_aktif,
+				'st_sekali_pakai' => $st_aktif,
 			]);
 
 			DB::commit();
@@ -115,6 +123,12 @@ class MasterToolController extends Controller
 			} else if ($st_aktif == 'F') {
 				$st_aktif = false;
 			}
+			$st_sekali_pakai = trim($data['st_sekali_pakai']) != '' ? trim($data['st_sekali_pakai']) : true;
+			if ($st_sekali_pakai == 'T') {
+				$st_sekali_pakai = true;
+			} else if ($st_sekali_pakai == 'F') {
+				$st_sekali_pakai = false;
+			}
 
 			if ($nm_tool == null || $kd_jenis == null) throw new \Exception('Nama dan jenis tidak boleh kosong');
 
@@ -135,6 +149,7 @@ class MasterToolController extends Controller
 				'stok_minimal' => $stok_minimal,
 				'harga' => $harga,
 				'st_aktif' => $st_aktif,
+				'st_sekali_pakai' => $st_sekali_pakai,
 			]);
 
 			DB::commit();

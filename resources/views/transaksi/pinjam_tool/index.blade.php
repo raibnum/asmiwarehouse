@@ -58,6 +58,7 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['whs-pinj-tool-create']))
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-add">Add</label>
@@ -65,6 +66,7 @@
                       onclick="popupModalCreate();">Add</button>
                   </div>
                 </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table table-bordered table-hover table-sm w-100" id="table-master">
                 <thead>
@@ -91,6 +93,8 @@
 @include('transaksi.popup.modalCreatePinjamTool')
 <!-- Modal Edit -->
 @include('transaksi.popup.modalEditPinjamTool')
+<!-- Modal Detail -->
+@include('transaksi.popup.modalDetailPinjamTool')
 @endsection
 @section('script')
 <script>
@@ -129,6 +133,8 @@
         dropdownParent: $('#modalCreatePinjamTool'),
         width: '100%'
       });
+
+      $('#form-edit input[name="_method"]').val('put');
     });
   });
 
@@ -291,6 +297,14 @@
     }
   }
 
+  function checkAll(el) {
+    let checked = $(el).prop('checked');
+
+    $('#table-edit tbody tr input[id^="st_kembali"]:not(:disabled)').each(function () {
+      $(this).prop('checked', checked);
+    });
+  }
+
   function checkMaxValue(el) {
     let max = +($(el).attr('max'));
     let value = +($(el).val());
@@ -386,25 +400,51 @@
     `;
   }
 
+  function rowDetail(index, p2t) {
+    return `
+      <tr id="row-detail-${index}">
+        <td class="text-center">${index}</td>
+        <td>
+          <input type="text" name="kd_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.kd_tool || ''}" readonly>
+        </td>
+        <td>
+          <input type="text" name="nm_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.nm_tool || ''}" readonly>
+        </td>
+        <td>
+          <input type="text" name="jenis_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.jenis_tool.nm_jenis || ''}" readonly>
+        </td>
+        <td>
+          <input type="number" name="qty_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.qty || ''}" readonly>
+        </td>
+        <td class="text-center">
+          <div class="icheck-maroon">
+            <input type="checkbox" name="st_kembali[${p2t.kd_tool}]" value="T" ${p2t.tgl_kembali != null ? 'checked' : ''} disabled>
+            <label></label>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
   function rowEdit(index, p2t) {
     return `
       <tr id="row-edit-${index}">
         <td class="text-center">${index}</td>
         <td>
-          <input type="text" name="kd_tool[]" class="form-control form-control-sm" value="${p2t.kd_tool || ''}" readonly>
+          <input type="text" name="kd_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.kd_tool || ''}" readonly>
         </td>
         <td>
-          <input type="text" name="nm_tool[]" class="form-control form-control-sm" value="${p2t.tool.nm_tool || ''}" readonly>
+          <input type="text" name="nm_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.nm_tool || ''}" readonly>
         </td>
         <td>
-          <input type="text" name="jenis_tool[]" class="form-control form-control-sm" value="${p2t.tool.jenis_tool.nm_jenis || ''}" readonly>
+          <input type="text" name="jenis_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.jenis_tool.nm_jenis || ''}" readonly>
         </td>
         <td>
-          <input type="number" name="qty_tool[]" class="form-control form-control-sm" value="${p2t.qty || ''}" readonly>
+          <input type="number" name="qty_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.qty || ''}" readonly>
         </td>
         <td class="text-center">
           <div class="icheck-maroon">
-            <input type="checkbox" name="st_kembali[]" id="st_kembali-${index}" value="T" ${p2t.tgl_kembali != null ? 'checked' : ''}>
+            <input type="checkbox" name="st_kembali[${p2t.kd_tool}]" id="st_kembali-${index}" value="T" ${p2t.tgl_kembali != null ? 'checked disabled' : ''}>
             <label for="st_kembali-${index}"></label>
           </div>
         </td>
@@ -417,6 +457,28 @@
    */
   function popupModalCreate() {
     $('#modalCreatePinjamTool').modal('show');
+  }
+
+  function popupModalDetail(el) {
+    let row = $(el).closest('tr')
+    let data = tableMaster.row(row).data();
+    let kd_pinj = data.kd_pinj;
+    let tgl = moment(data.tgl);
+    let operator = data.opr.id;
+    let status = data.status_text;
+    let pinjam_tool2s = data.pinjam_tool2s || [];
+
+    $('#detail_kd_pinj').val(kd_pinj);
+    $('#detail_tgl').val(tgl.format('YYYY-MM-DD'));
+    $('#detail_jam').val(tgl.format('HH:mm'));
+    $('#detail_operator').val(operator).change();
+
+    $('#table-detail tbody').html('');
+    pinjam_tool2s.forEach((p2t, i) => {
+      $('#table-detail tbody').append(rowDetail(i + 1, p2t));
+    });
+
+    $('#modalDetailPinjamTool').modal('show');
   }
 
   function popupModalEdit(el) {

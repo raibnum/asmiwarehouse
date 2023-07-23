@@ -48,6 +48,8 @@ class InoutToolController extends Controller
         return '<span class="font-weight-bold text-' . $context . '">' . $inout->status . '</span>';
       })
       ->addColumn('action', function ($inout) {
+        if (!Auth::user()->isAble(['whs-inout-tool-create'])) return '';
+
         return '
           <button type="button" class="btn btn-xs btn-success" onclick="popupModalEdit(this);" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="fas fa-edit"></i>
@@ -71,7 +73,7 @@ class InoutToolController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    if (!Auth::user()->isAble(['whs-pinj-tool-create'])) return response()->json([
+    if (!Auth::user()->isAble(['whs-inout-tool-create'])) return response()->json([
       'title' => 'Forbidden',
       'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
       'status' => 'warning'
@@ -123,7 +125,7 @@ class InoutToolController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    if (!Auth::user()->isAble(['whs-pinj-tool-create'])) return response()->json([
+    if (!Auth::user()->isAble(['whs-inout-tool-create'])) return response()->json([
       'title' => 'Forbidden',
       'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
       'status' => 'warning'
@@ -178,7 +180,7 @@ class InoutToolController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    if (!Auth::user()->isAble(['whs-pinj-tool-create'])) return response()->json([
+    if (!Auth::user()->isAble(['whs-inout-tool-create'])) return response()->json([
       'title' => 'Forbidden',
       'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
       'status' => 'warning'

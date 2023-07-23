@@ -33,6 +33,7 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['whs-operator-create']))
                 <div class="col-sm-2">
                   <div class="form-group">
                     <label for="btn-add">Add</label>
@@ -40,6 +41,7 @@
                       onclick="popupModalCreate();">Add</button>
                   </div>
                 </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table tale-striped table-bordered table-sm w-100" id="table-master">
                 <thead>

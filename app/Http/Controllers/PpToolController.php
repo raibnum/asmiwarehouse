@@ -77,7 +77,7 @@ class PpToolController extends Controller
 
 				if (!is_null($pptool->file)) {
 					$action .= '
-						<button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Invoice">
+						<button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Invoice" onclick="popupModalInvoice(\'' . $pptool->no_pp . '\');">
 							<i class="fas fa-receipt"></i>
 						</button>
 					';
@@ -325,9 +325,11 @@ class PpToolController extends Controller
 		if (!Auth::user()->isAble(['whs-pp-tool-approve'])) return view('error.403');
 
 		$opt_status = PpTool1::status();
+		$opt_tool = Tool::aktif()->with('jenisTool')->get()->all();
 
 		return view('transaksi.pp_tool.index_approve', [
 			'opt_status' => $opt_status,
+			'opt_tool' => $opt_tool
 		]);
 	}
 
@@ -372,9 +374,11 @@ class PpToolController extends Controller
 		if (!Auth::user()->isAble(['prch-pp-tool-submit'])) return view('error.403');
 
 		$opt_status = PpTool1::status();
+		$opt_tool = Tool::aktif()->with('jenisTool')->get()->all();
 
 		return view('transaksi.pp_tool.index_prch', [
 			'opt_status' => $opt_status,
+			'opt_tool' => $opt_tool
 		]);
 	}
 
@@ -475,6 +479,44 @@ class PpToolController extends Controller
 		}
 	}
 
-	// $loc_file = file_get_contents('file:///' . str_replace("\\\\", "\\", $destinationPath));
-	//     $data_src = "data:" . mime_content_type($destinationPath) . ";charset=utf-8;base64," . base64_encode($loc_file);
+	/* OTHER */
+	public function getInvoice(Request $request, $no_pp)
+	{
+		if (!$request->ajax()) return redirect()->route('home');
+
+		if (!Auth::user()->isAble(['whs-pp-tool-view'])) return response()->json([
+			'title' => 'Forbidden',
+			'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
+			'status' => 'warning'
+		], 403);
+
+		$no_pp = base64_decode($no_pp);
+		$path = public_path() . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'no-image.jpeg';
+
+		$pp = PpTool1::find($no_pp);
+
+		if (!is_null($pp->file)) {
+			$path_invoice = PpTool1::fileUploadPath($pp->file);
+			if (file_exists($path_invoice)) $path = $path_invoice;
+		}
+
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		$loc_file = file_get_contents('file:///' . str_replace("\\\\", "\\", $path));
+		$data_src = "data:" . mime_content_type($path) . ";charset=utf-8;base64," . base64_encode($loc_file);
+
+		if ($ext == 'pdf') {
+			$invoice = '<iframe src="' . $data_src . '" class="w-100 h-100 position-absolute"></iframe>';
+		} else if (in_array($ext, ['jpeg', 'jpg', 'png'])) {
+			$invoice = '<img src="' . $data_src . '" alt="Invoice" class="w-100 h-100">';
+		}
+
+		return response()->json([
+			'title' => 'Success',
+			'message' => 'Berhasil mengambil invoice',
+			'status' => 'success',
+			'data' => [
+				'invoice' => $invoice
+			]
+		], 200);
+	}
 }

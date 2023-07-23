@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InoutTool;
 use Carbon\Carbon;
 use App\Models\Tool;
 use App\Models\Operator;
@@ -39,7 +40,7 @@ class PinjamToolController extends Controller
     $tgl_akhir = $request->tgl_akhir;
     $status = $request->status;
 
-    $pinjtool = PinjamTool1::periode($tgl_awal, $tgl_akhir)->status($status)->with(['opr',  'pinjamTool2s', 'pinjamTool2s.tool', 'pinjamTool2s.tool.jenisTool']);
+    $pinjtool = PinjamTool1::periode($tgl_awal, $tgl_akhir)->status($status)->with(['opr',  'pinjamTool2s', 'pinjamTool2s.tool', 'pinjamTool2s.tool.jenisTool'])->orderBy('tgl', 'desc');
 
     return DataTables::eloquent($pinjtool)
       ->editColumn('status', function ($pinjtool) {
@@ -58,22 +59,30 @@ class PinjamToolController extends Controller
         return '<span class="font-weight-bold text-' . $level . '">' . $text . '</span>';
       })
       ->addColumn('action', function ($pinjtool) {
-        $action = '';
+        $create = Auth::user()->isAble(['whs-pinj-tool-create']);
 
-        if ($pinjtool->status < 2) {
-          $action .= '
+        $action = '
+          <button type="button" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="top" title="Detail" onclick="popupModalDetail(this);">
+            <i class="fas fa-info-circle"></i>
+          </button>
+        ';
+
+        if ($create) {
+          if ($pinjtool->status < 2) {
+            $action .= '
             <button type="button" class="btn btn-xs btn-success" onclick="popupModalEdit(this);" data-toggle="tooltip" data-placement="top" title="Input Kembali">
               <i class="fas fa-exchange-alt"></i>
             </button>
           ';
-        }
+          }
 
-        if ($pinjtool->status == 0) {
-          $action .= '
+          if ($pinjtool->status == 0) {
+            $action .= '
             <button type="button" class="btn btn-xs btn-danger" onclick="deletePinjamTool(\'' . $pinjtool->kd_pinj . '\');" data-toggle="tooltip" data-placement="top" title="Hapus">
               <i class="fas fa-trash-alt"></i>
             </button>
           ';
+          }
         }
 
         return $action;
@@ -174,6 +183,7 @@ class PinjamToolController extends Controller
       foreach ($st_kembali as $i => $stk) {
         $kd_tool = $data['kd_tool'][$i];
         $tgl = Carbon::now();
+        $qty = trim($data['qty_tool'][$i]) != '' ? trim($data['qty_tool'][$i]) : null;
 
         if ($stk != 'T') continue;
 
@@ -182,6 +192,22 @@ class PinjamToolController extends Controller
           ->update([
             'tgl_kembali' => $tgl
           ]);
+
+        $tool = Tool::find($kd_tool);
+
+        if ($tool->st_sekali_pakai == true) {
+          $tool->update(['stok' => DB::raw("stok - $qty")]);
+          $pinjam1 = PinjamTool1::find($kd_pinj);
+
+          InoutTool::create([
+            'kd_tool' => $kd_tool,
+            'tgl' => $tgl,
+            'operator' => $pinjam1->operator,
+            'status' => 'KELUAR',
+            'qty' => $qty,
+            'harga' => $tool->first()->harga
+          ]);
+        }
       }
 
       PinjamTool1::find($kd_pinj)->udpateStatus();

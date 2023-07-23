@@ -56,7 +56,7 @@
                 <div class="form-group row">
                   <label for="permissions" class="col-sm-2 col-form-label">Permission</label>
                   <div class="col-sm-4">
-                    <select name="permissions[]" id="permissions" class="form-control" multiple="multiple">
+                    <select name="permissions[]" id="permissions" class="form-control select2" multiple="multiple">
                       @foreach ($permissions as $p)
                       <option value="{{ $p->id }}">{{ $p->display_name }}</option>
                       @endforeach
@@ -79,16 +79,4 @@
     </div> <!-- /.container-fluid -->
   </section> <!-- /.content -->
 </div> <!-- /.content-wrapper -->
-@endsection
-@section('script')
-<script>
-  $(document).ready(function () {
-    $(function () {
-      $('#permissions').select2({
-        placeholder: 'Permission',
-        width: '100%'
-      });
-    });
-  });
-</script>
 @endsection

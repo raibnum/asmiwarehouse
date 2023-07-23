@@ -13,7 +13,7 @@ class MasterOperatorController extends Controller
 {
   public function index()
   {
-    if (!Auth::user()->isAble(['mas_operator_view'])) return view('error.403');
+    if (!Auth::user()->isAble(['whs-operator-view', 'whs-operator-create'])) return view('error.403');
 
     $divisi = DB::table('mas_operators')
       ->selectRaw('distinct divisi')
@@ -27,11 +27,11 @@ class MasterOperatorController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    // if (!Auth::user()->isAble(['mas_operator_create'])) return response()->json([
-    //   'title' => 'Forbidden',
-    //   'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
-    //   'status' => 'warning'
-    // ], 403);
+    if (!Auth::user()->isAble(['whs-operator-create'])) return response()->json([
+      'title' => 'Forbidden',
+      'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
+      'status' => 'warning'
+    ], 403);
 
     try {
       $data = $request->all();
@@ -74,11 +74,11 @@ class MasterOperatorController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    // if (!Auth::user()->isAble(['mas_operator_create'])) return response()->json([
-    //   'title' => 'Forbidden',
-    //   'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
-    //   'status' => 'warning'
-    // ], 403);
+    if (!Auth::user()->isAble(['whs-operator-create'])) return response()->json([
+      'title' => 'Forbidden',
+      'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
+      'status' => 'warning'
+    ], 403);
 
     try {
       $data = $request->all();
@@ -124,11 +124,11 @@ class MasterOperatorController extends Controller
   {
     if (!$request->ajax()) return redirect()->route('home');
 
-    // if (!Auth::user()->isAble(['mas_operator_create'])) return response()->json([
-    //   'title' => 'Forbidden',
-    //   'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
-    //   'status' => 'warning'
-    // ], 403);
+    if (!Auth::user()->isAble(['whs-operator-create'])) return response()->json([
+      'title' => 'Forbidden',
+      'message' => 'Maaf, Anda tidak memiliki izin untuk akses ini',
+      'status' => 'warning'
+    ], 403);
 
     try {
       $id = base64_decode($id);

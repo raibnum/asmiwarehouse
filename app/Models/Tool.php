@@ -17,7 +17,7 @@ class Tool extends Model
 	protected $keyType = 'string';
 	public $increment = false;
 
-	protected $fillable = ['kd_tool', 'nm_tool', 'kd_jenis', 'stok', 'stok_minima', 'harga', 'st_aktif'];
+	protected $fillable = ['kd_tool', 'nm_tool', 'kd_jenis', 'stok', 'stok_minimal', 'harga', 'st_aktif', 'st_sekali_pakai'];
 	protected $appends = ['stok_available'];
 
 	/* ACCESSOR & MUTATOR*/
@@ -61,4 +61,9 @@ class Tool extends Model
 	}
 
 	/* CUSTOM */
+	public static function totalTool()
+	{
+		$tool = self::aktif()->get()->all();
+		return count($tool);
+	}
 }

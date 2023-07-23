@@ -14,7 +14,8 @@
           <div class="form-group row">
             <label for="edit_kd_pinj" class="col-sm-2 col-form-label">Kode</label>
             <div class="col-sm-4">
-              <input type="text" name="kd_pinj" id="edit_kd_pinj" class="form-control" placeholder="Kode Pinjam" readonly required>
+              <input type="text" name="kd_pinj" id="edit_kd_pinj" class="form-control" placeholder="Kode Pinjam"
+                readonly required>
             </div>
           </div>
 
@@ -50,7 +51,7 @@
                 <th class="text-center align-middle" style="width: 15%;">Qty</th>
                 <th class="text-center align-middle" style="width: 50px;">
                   <div class="icheck-maroon my-1">
-                    <input type="checkbox" name="check_all" id="check_all" value="T">
+                    <input type="checkbox" name="check_all" id="check_all" value="T" onchange="checkAll(this);">
                     <label for="check_all"></label>
                   </div>
                 </th>

@@ -34,12 +34,14 @@
                       onclick="reloadTableMaster();">Display</button>
                   </div>
                 </div> <!-- /.col -->
+                @if (Auth::user()->isAble(['admin-user-create']))
                 <div class="col-sm-2">
                   <div class="form-groupo">
                     <label for="btn-add">Add</label>
                     <a href="{{ route('user.create') }}" class="btn btn-success form-control" id="btn-add">Add</a>
                   </div>
                 </div> <!-- /.col -->
+                @endif
               </div> <!-- /.row -->
               <table class="table table-striped table-bordered table-sm w-100" id="table-master">
                 <thead>
@@ -69,6 +71,38 @@
   $(document).ready(function () {
     initTableMaster();
   });
+
+  function deleteUser(id) {
+    Swal.fire({
+      title: 'Hapus User',
+      text: 'Anda yakin ingin menghapus?',
+      icon: 'question',
+      showConfirmButton: true,
+      confirmButtonText: '<i class="fas fa-check"></i> Hapus',
+      confirmButtonColor: '#007bff',
+      showCancelButton: true,
+      cancelButtonText: '<i class="fas fa-times"></i> Batal',
+      cancelButtonColor: '#dc3545',
+      reverseButtons: true,
+      focusCancel: true
+    }).then(result => {
+      if (result.isDismissed) return ;
+
+      let url = "{{ route('user.destroy', 'param') }}";
+      url = url.replace('param', btoa(id));
+
+      $('#loading').show();
+      $.post(url, { _method: 'delete' }, res => {
+        $('#loading').hide();
+        Swal.fire(res.title, res.message, res.status);
+        reloadTableMaster();
+      }).fail(xhr => {
+        $('#loading').hide();
+        let res = xhr.responseJSON || {};
+        Swal.fire(res.title || 'Failed', res.message || 'Terjadi kesalahan pada system, harap coba lagi', res.status || 'error');
+      });
+    });
+  }
 
   /**
    * utility
