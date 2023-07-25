@@ -26,6 +26,8 @@
         <a href="#" class="h1"><b>ASMI</b> Warehouse</a>
       </div>
       <div class="card-body">
+        @include('components.flash')
+        
         @if (session()->has('flash-notification.message'))
           <div class="alert alert-{{ session()->get('flash-notification.level') }}" role="alert">
             {{ session()->get('flash-notification.message') }}

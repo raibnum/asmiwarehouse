@@ -62,7 +62,7 @@ class AuthController extends Controller
     $credentials = $request->validate([
       'username' => ['required', 'max:20', 'unique:users,username'],
       'name' => ['required', 'max:150'],
-      'email' => ['required'],
+      'email' => ['required', 'unique:users,email'],
       'password' => ['required', 'min:3'],
     ]);
 
@@ -100,18 +100,60 @@ class AuthController extends Controller
     if ($validate) {
       try {
         $email = trim($request->email);
+        $user = User::where('email', $email)->first();
 
-        Mail::to($email)
-          ->bcc(['mrafli@gmail.com'])
-          ->send(new ResetPassword());
+        $token = $user->generateTokenForgetPassword();
 
-        return back()->with([
+        Mail::to($user->email)
+          ->send(new ResetPassword($token, $user->email));
+
+        Session::flash('flash_notification', [
           'level' => 'success',
-          'message' => 'Link reset password berhasil dikirim ke email Anda'
+          'message' => 'Berhasil mengirim link ke email Anda'
         ]);
+
+        return redirect()->route('login.index');
       } catch (\Exception $ex) {
-        return back()->withErrors('email', 'Gagal mengirim email');
+        return back()->withErrors('email', 'Gagal mengirim email')->withInput();
       }
     }
+
+    return back()->withErrors(['forget_password' => 'Gagal'])->withInput();
+  }
+
+  /**
+   * Reset Password
+   */
+  function resetPasswordIndex(Request $request, $token)
+  {
+    $email = $request->email ?? '';
+    return view('auth.reset-password', ['email' => $email, 'token' => $token]);
+  }
+
+  function resetPassword(Request $request)
+  {
+    $errors = [];
+
+    $request->validate([
+      'token-reset' => ['required', 'exists:password_reset_tokens,token'],
+      'email' => ['required', 'exists:users,email'],
+      'password' => ['required', 'confirmed']
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    $st_token = $user->updatePassword($request->password, $request->{'token-reset'});
+
+    if ($st_token == true) {
+      Session::flash('flash_notification', [
+        'level' => 'success',
+        'message' => 'Berhasil mengganti password'
+      ]);
+      return redirect()->route('login.index');
+    }
+
+    $erors['status'] = $st_token;
+
+    return back()->withErrors($errors);
   }
 }

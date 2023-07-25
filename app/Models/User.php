@@ -3,8 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -123,5 +126,48 @@ class User extends Authenticatable
       ->join('roles as r', 'r.id', '=', 'ru.role_id')
       ->where('user_id', $user_id)
       ->get();
+  }
+
+  /* CUSTOM */
+  public function generateTokenForgetPassword()
+  {
+    $token = Str::random(50);
+    DB::table('password_reset_tokens')
+      ->upsert(
+        [
+          'email' => $this->email,
+          'token' => $token,
+          'created_at' => Carbon::now()
+        ],
+        ['email'],
+        ['token', 'created_at']
+      );
+
+    return $token;
+  }
+
+  public function updatePassword($password, $token)
+  {
+    $now = Carbon::now();
+    $stored_token = DB::table('password_reset_tokens')
+      ->where('email', $this->email)
+      ->first();
+
+    $token_created = Carbon::parse($stored_token->created_at);
+
+    $expired = $token_created->diffInSeconds($now) / 60 > 30 ? true : false;
+
+    if ($token !== $stored_token->token) return 'Token Invalid';
+
+    if ($expired) return 'Token Expired';
+
+    DB::table('password_reset_tokens')
+      ->where('email', $this->email)
+      ->delete();
+
+    $this->password = Hash::make($password);
+    $this->save();
+
+    return true;
   }
 }

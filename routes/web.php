@@ -40,7 +40,7 @@ Route::group(['middleware' => ['guest']], function () {
   Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forgetPassword');
 
   Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordIndex'])->name('resetPassword.index');
-  Route::get('reset-password/{token}', [AuthController::class, 'resetPassword'])->name('resetPassword');
+  Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
 });
 
 Route::group(['middleware' => ['auth']], function () {

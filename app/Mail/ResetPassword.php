@@ -14,12 +14,16 @@ class ResetPassword extends Mailable
 {
   use Queueable, SerializesModels;
 
+  protected $token;
+  protected $email;
+
   /**
    * Create a new message instance.
    */
-  public function __construct()
+  public function __construct($token, $email)
   {
-    //
+    $this->token = $token;
+    $this->email = $email;
   }
 
   /**
@@ -28,7 +32,7 @@ class ResetPassword extends Mailable
   public function envelope(): Envelope
   {
     return new Envelope(
-      from: new Address('warehouseasmi@gmail.com', 'Warehouse ASMI'),
+      from: new Address('warehouseasmi@gmail.com', 'ASMI Warehouse'),
       subject: 'Reset Password'
     );
   }
@@ -40,6 +44,10 @@ class ResetPassword extends Mailable
   {
     return new Content(
       view: 'mail.resetPassword',
+      with: [
+        'token' => $this->token,
+        'email' => $this->email
+      ]
     );
   }
 
