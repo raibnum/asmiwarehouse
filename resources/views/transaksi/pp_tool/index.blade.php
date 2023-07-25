@@ -348,7 +348,7 @@
     let index = $('#table-create tbody tr').length + 1;
     $('#table-create tbody').append(rowCreate(index));
 
-    if (index > 1) $('#table-create tbody tr:eq(0) td:eq(5) button').attr('disabled', false);
+    if (index > 1) $('#table-create tbody tr:eq(0) td:eq(5) button').prop('disabled', false);
 
     $('.select2-tool').select2({
       dropdownParent: $('#modalCreatePpTool'),
@@ -361,7 +361,7 @@
     let index = $('#table-edit tbody tr').length + 1;
     $('#table-edit tbody').append(rowEdit(index));
 
-    if (index > 1) $('#table-edit tbody tr:eq(0) td:eq(5) button').attr('disabled', false);
+    if (index > 1) $('#table-edit tbody tr:eq(0) td:eq(5) button').prop('disabled', false);
 
     $('#form-edit .select2-tool').select2({
       dropdownParent: $('#modalEditPpTool'),
@@ -372,7 +372,7 @@
 
   function adjustRowCreate() {
     let trLength = $('#table-create tbody tr').length;
-    if (trLength == 1) $('#table-create tbody tr:eq(0) td:eq(5) button').attr('disabled',  true);
+    if (trLength == 1) $('#table-create tbody tr:eq(0) td:eq(5) button').prop('disabled',  true);
 
     for (let i = 0; i < trLength; i++) {
       let tr = $(`#table-create tbody tr:eq(${i})`);
@@ -384,7 +384,7 @@
 
   function adjustRowEdit() {
     let trLength = $('#table-edit tbody tr').length;
-    if (trLength == 1) $('#table-edit tbody tr:eq(0) td:eq(5) button').attr('disabled',  true);
+    if (trLength == 1) $('#table-edit tbody tr:eq(0) td:eq(5) button').prop('disabled',  true);
 
     for (let i = 0; i < trLength; i++) {
       let tr = $(`#table-edit tbody tr:eq(${i})`);
@@ -431,6 +431,7 @@
           $.post(url,{ _method: 'delete' }, res => {
             $('#loading').hide();
             Swal.fire(res.title, res.message, res.status);
+            reloadTableMaster();
             resolve(null);
           }).fail(xhr => {
             $('#loading').hide();

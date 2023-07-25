@@ -11,9 +11,14 @@ class HomeController extends Controller
 {
   public function index()
   {
+    $user = Auth::user();
     $compact = [];
 
-    if (Auth::user()->isAble(['whs-inout-tool-view'])) {
+    if (count($user->roles()->all()) == 0) {
+      $compact['no_role'] = true;
+    }
+
+    if ($user->isAble(['whs-inout-tool-view'])) {
       $tool_out = InoutTool::totalKeluar();
       $compact['tool_out'] = $tool_out;
 
@@ -21,12 +26,12 @@ class HomeController extends Controller
       $compact['tool_in'] = $tool_in;
     }
 
-    if (Auth::user()->isAble(['whs-pp-tool-view'])) {
+    if ($user->isAble(['whs-pp-tool-view'])) {
       $total_pp = PpTool1::totalPp();
       $compact['total_pp'] = $total_pp;
     }
 
-    if (Auth::user()->isAble(['whs-tool-view'])) {
+    if ($user->isAble(['whs-tool-view'])) {
       $total_tool = Tool::totalTool();
       $compact['total_tool'] = $total_tool;
     }

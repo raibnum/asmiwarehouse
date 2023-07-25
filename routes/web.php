@@ -13,7 +13,6 @@ use App\Http\Controllers\MasterToolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PinjamToolController;
 use App\Http\Controllers\MasterOperatorController;
-use App\Models\InoutTool;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +30,17 @@ use App\Models\InoutTool;
 /* AUTH */
 
 Route::group(['middleware' => ['guest']], function () {
-  Route::get('login', [AuthController::class, 'loginIndex'])->name('loginIndex');
+  Route::get('login', [AuthController::class, 'loginIndex'])->name('login.index');
   Route::post('login', [AuthController::class, 'login'])->name('login');
 
-  Route::get('register', [AuthController::class, 'registerIndex'])->name('registerIndex');
+  Route::get('register', [AuthController::class, 'registerIndex'])->name('register.index');
   Route::post('register', [AuthController::class, 'register'])->name('register');
+
+  Route::get('forget-password', [AuthController::class, 'forgetPasswordIndex'])->name('forgetPassword.index');
+  Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forgetPassword');
+
+  Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordIndex'])->name('resetPassword.index');
+  Route::get('reset-password/{token}', [AuthController::class, 'resetPassword'])->name('resetPassword');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -45,10 +50,6 @@ Route::group(['middleware' => ['auth']], function () {
 /* HOME */
 Route::group(['middleware' => ['auth']], function () {
   Route::get('/', [HomeController::class, 'index'])->name('home');
-});
-
-Route::group(['middleware' => ['guest']], function () {
-  //
 });
 
 /* ADMIN */

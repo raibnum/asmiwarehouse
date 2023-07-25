@@ -26,13 +26,19 @@
         <a href="#" class="h1"><b>ASMI</b> Warehouse</a>
       </div>
       <div class="card-body">
-        <p class="login-box-msg @error('login') text-danger font-weight-bold @enderror">
-          @error('login')
-          {{ $message }}
-          @else
-          Masuk untuk menggunakan aplikasi
-          @enderror
-        </p>
+        @if (session()->has('flash-notification.message'))
+          <div class="alert alert-{{ session()->get('flash-notification.level') }}" role="alert">
+            {{ session()->get('flash-notification.message') }}
+          </div>
+        @else
+          <p class="login-box-msg @error('login') text-danger font-weight-bold @enderror">
+            @error('login')
+            {{ $message }}
+            @else
+            Masuk untuk menggunakan aplikasi
+            @enderror
+          </p>
+        @endif
 
         <form action="{{ route('login') }}" method="post">
           @csrf
@@ -63,7 +69,7 @@
           <div class="row">
             <div class="col-8">
               <div class="icheck-primary">
-                <input type="checkbox" name="remember" value="true" id="remember">
+                <input type="checkbox" name="remember" value="T" id="remember">
                 <label for="remember">
                   Remember Me
                 </label>
@@ -78,10 +84,10 @@
         </form>
 
         <p class="mb-1">
-          <a href="#">Lupa Password</a>
+          <a href="{{ route('forgetPassword.index') }}">Lupa Password</a>
         </p>
         <p class="mb-0">
-          <a href="{{ route('registerIndex') }}" class="text-center">Register a new membership</a>
+          <a href="{{ route('register.index') }}" class="text-center">Register akun baru</a>
         </p>
       </div>
       <!-- /.card-body -->

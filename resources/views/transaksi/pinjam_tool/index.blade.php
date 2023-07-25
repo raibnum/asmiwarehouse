@@ -332,7 +332,7 @@
     let index = $('#table-create tbody tr').length + 1;
     $('#table-create tbody').append(rowCreate(index));
 
-    if (index > 1) $('#table-create tbody tr:eq(0) td:eq(5) button').attr('disabled', false);
+    if (index > 1) $('#table-create tbody tr:eq(0) td:eq(5) button').prop('disabled', false);
 
     $('.select2-tool').select2({
       dropdownParent: $('#modalCreatePinjamTool'),
@@ -343,7 +343,7 @@
 
   function adjustRowCreate() {
     let trLength = $('#table-create tbody tr').length;
-    if (trLength == 1) $('#table-create tbody tr:eq(0) td:eq(5) button').attr('disabled',  true);
+    if (trLength == 1) $('#table-create tbody tr:eq(0) td:eq(5) button').prop('disabled',  true);
 
     for (let i = 0; i < trLength; i++) {
       let tr = $(`#table-create tbody tr:eq(${i})`);

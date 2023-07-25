@@ -105,7 +105,6 @@ class User extends Authenticatable
 
   public function permissions()
   {
-    $user_id = $this->id;
     $roles = $this->roles();
 
     return DB::table('permission_role as pr')

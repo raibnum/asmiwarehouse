@@ -13,6 +13,18 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
+        @if (isset($no_role))
+          <div class="col-sm-12">
+            <div class="card card-outline card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Dashboard</h3>
+              </div> <!-- /.card-header -->
+              <div class="card-body">
+                Akun baru ya? Yuk minta Admin untuk kasih kamu Role!
+              </div> <!-- /.card-body -->
+            </div>
+          </div> <!-- /.card -->
+        @endif
 
         @if (isset($tool_out))
           <div class="col-sm-3">
