@@ -420,11 +420,11 @@
           if (result.isDismissed) return;
           
           let tr = $(`#row-edit-${index}`);
-          let kd_tool = tr.find('td:eq(1) input').val();
+          let kd_tool = tr.find('td:eq(1) select').val();
           let no_pp = $('#edit_no_pp').val();
-  
+
           let url = "{{ route('pptool.destroyItem', ['param', 'param1']) }}";
-          url = url.replace('param2', btoa(kd_tool));
+          url = url.replace('param1', btoa(kd_tool));
           url = url.replace('param', btoa(no_pp));
   
           $('#loading').show();
