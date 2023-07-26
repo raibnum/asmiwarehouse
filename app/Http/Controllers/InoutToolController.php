@@ -238,10 +238,7 @@ class InoutToolController extends Controller
     $tgl_awal = Carbon::parse($tgl_awal)->format('d/m/Y');
     $tgl_akhir = Carbon::parse($tgl_akhir)->format('d/m/Y');
 
-    // harus pake error_reporting
-    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-    ob_end_clean();
-    ob_start();
+    set_time_limit(0);
 
     $pdf = \PDF::loadView('report.inout_tool.pdf', [
       'inout' => $inout,
