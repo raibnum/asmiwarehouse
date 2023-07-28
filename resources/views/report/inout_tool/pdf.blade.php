@@ -89,7 +89,7 @@
     <table class="header">
       <tr>
         <td>
-          <img src="{{ asset('images/logo-asmi.png') }}" alt="Logo">
+          <img src="{{ public_path() . '/images/logo-asmi.png' }}" alt="Logo">
         </td>
         <td>
           <table class="title">
