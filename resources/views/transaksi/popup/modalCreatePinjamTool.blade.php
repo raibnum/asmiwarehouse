@@ -64,7 +64,8 @@
                     <option></option>
                     @foreach ($opt_tool as $tool)
                     <option value="{{ $tool->kd_tool }}" data-nm_tool="{{ $tool->nm_tool }}"
-                      data-jenis="{{ $tool->jenisTool->nm_jenis }}" data-stok="{{ $tool->stok_available }}">{{ $tool->kd_tool }}
+                      data-jenis="{{ $tool->jenisTool->nm_jenis }}" data-stok="{{ $tool->stok_available }}">{{
+                      $tool->kd_tool }}
                     </option>
                     @endforeach
                   </select>
@@ -78,7 +79,7 @@
                 </td>
                 <td>
                   <input type="number" name="qty_tool[]" class="form-control form-control-sm" min="0" step="1"
-                    onchange="checkMaxValue(this);" required>
+                    onchange="checkMaxValue(this); checkNilValue(this);" required>
                   <div class="invalid-feedback">Stok kurang</div>
                 </td>
                 <td class="text-center">

@@ -311,6 +311,18 @@
 
     if (value > max) {
       $(el).addClass('is-invalid');
+      $(el).siblings('.invalid-feedback').html('Stok kurang');
+    } else {
+      $(el).removeClass('is-invalid');
+    }
+  }
+  
+  function checkNilValue(el) {
+    let value = $(el).val();
+
+    if (value === '0') {
+      $(el).val('').addClass('is-invalid');
+      $(el).siblings('.invalid-feedback').html('Qty tidak boleh 0');
     } else {
       $(el).removeClass('is-invalid');
     }
@@ -388,7 +400,7 @@
         </td>
         <td>
           <input type="number" name="qty_tool[]" class="form-control form-control-sm" min="0" step="1"
-            onchange="checkMaxValue(this);">
+            onchange="checkMaxValue(this); checkNilValue(this);" required>
           <div class="invalid-feedback">Stok kurang</div>
         </td>
         <td class="text-center">
