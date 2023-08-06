@@ -258,7 +258,7 @@ class PpToolController extends Controller
 
 			DB::beginTransaction();
 
-			PpTool2::find($no_pp)->delete();
+			PpTool2::where('no_pp', $no_pp)->delete();
 			PpTool1::find($no_pp)->delete();
 
 			DB::commit();
@@ -299,7 +299,7 @@ class PpToolController extends Controller
 
 			DB::beginTransaction();
 
-			PpTool2::find($no_pp)
+			PpTool2::where('no_pp', $no_pp)
 				->where('kd_tool', $kd_tool)
 				->delete();
 

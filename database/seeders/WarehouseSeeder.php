@@ -36,6 +36,17 @@ class WarehouseSeeder extends Seeder
 			'st_sekali_pakai' => true
 		]);
 
+		Tool::create([
+			'kd_tool' => 'IN-APMT-16-08',
+			'nm_tool' => 'APMT160408PDER',
+			'kd_jenis' => 'IN',
+			'stok' => 10,
+			'stok_minimal' => 10,
+			'harga' => 10000,
+			'st_aktif' => true,
+			'st_sekali_pakai' => true
+		]);
+
 		Operator::create([
 			'nm_operator' => 'Muhammad Rafli',
 			'divisi' => 'IT'

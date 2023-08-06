@@ -63,13 +63,15 @@ return new class extends Migration
     });
 
     Schema::create('tr_pinj_tool2s', function (Blueprint $table) {
+      $table->id();
       $table->string('kd_pinj', 13);
       $table->string('kd_tool', 50);
       $table->integer('qty');
       $table->timestamp('tgl_kembali')->nullable();
 
-      $table->primary(['kd_pinj', 'kd_tool']);
       $table->foreign('kd_pinj')->references('kd_pinj')->on('tr_pinj_tool1s')->cascadeOnDelete();
+      $table->foreign('kd_tool')->references('kd_tool')->on('mas_tools')->cascadeOnDelete();
+      $table->unique(['kd_pinj', 'kd_tool']);
       $table->index(['kd_pinj', 'kd_tool']);
     });
 
@@ -99,11 +101,13 @@ return new class extends Migration
     });
 
     Schema::create('tr_pp_tool2s', function (Blueprint $table) {
+      $table->id();
       $table->string('no_pp', 13);
       $table->string('kd_tool', 50);
       $table->integer('qty');
 
-      $table->primary(['no_pp', 'kd_tool']);
+      // $table->primary(['no_pp', 'kd_tool']);
+      $table->unique(['no_pp', 'kd_tool']);
       $table->foreign('no_pp')->references('no_pp')->on('tr_pp_tool1s');
       $table->foreign('kd_tool')->references('kd_tool')->on('mas_tools');
     });

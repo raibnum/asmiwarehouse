@@ -249,7 +249,7 @@ class PinjamToolController extends Controller
 
       DB::beginTransaction();
 
-      PinjamTool2::find($kd_pinj)->delete();
+      PinjamTool2::where('kd_pinj', $kd_pinj)->delete();
       PinjamTool1::find($kd_pinj)->delete();
 
       DB::commit();

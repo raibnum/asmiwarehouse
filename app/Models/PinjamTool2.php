@@ -11,15 +11,12 @@ class PinjamTool2 extends Model
   use HasFactory;
 
   protected $table = 'tr_pinj_tool2s';
-  protected $primaryKey = 'kd_pinj';
-  protected $keyType = 'string';
-  public $increment = false;
+  // protected $primaryKey = 'kd_pinj';
+  // protected $keyType = 'string';
+  // public $increment = false;
   public $timestamps = false;
 
   protected $fillable = ['kd_pinj', 'kd_tool', 'qty', 'tgl_kembali'];
-
-  /* ACCESSOR & MUTATOR */
-  
 
   /* RELATIONSHIP */
   public function pinjamTool1()
