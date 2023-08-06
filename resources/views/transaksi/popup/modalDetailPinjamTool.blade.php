@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalDetailPinjamTool" tabindex="-1">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Detail Pinjam Tool</h5>
@@ -46,12 +46,7 @@
               <th class="text-center align-middle">Nama</th>
               <th class="text-center align-middle" style="width: 20%;">Jenis</th>
               <th class="text-center align-middle" style="width: 15%;">Qty</th>
-              <th class="text-center align-middle" style="width: 50px;">
-                <div class="icheck-maroon my-1">
-                  <input type="checkbox" name="check_all" id="check_all" value="T" checked disabled>
-                  <label for="check_all"></label>
-                </div>
-              </th>
+              <th class="text-center align-middle" style="width: 20%;">Tanggal Kembali</th>
             </tr>
           </thead>
           <tbody></tbody>

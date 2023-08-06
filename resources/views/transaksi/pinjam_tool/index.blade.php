@@ -416,24 +416,11 @@
     return `
       <tr id="row-detail-${index}">
         <td class="text-center">${index}</td>
-        <td>
-          <input type="text" name="kd_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.kd_tool || ''}" readonly>
-        </td>
-        <td>
-          <input type="text" name="nm_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.nm_tool || ''}" readonly>
-        </td>
-        <td>
-          <input type="text" name="jenis_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.tool.jenis_tool.nm_jenis || ''}" readonly>
-        </td>
-        <td>
-          <input type="number" name="qty_tool[${p2t.kd_tool}]" class="form-control form-control-sm" value="${p2t.qty || ''}" readonly>
-        </td>
-        <td class="text-center">
-          <div class="icheck-maroon">
-            <input type="checkbox" name="st_kembali[${p2t.kd_tool}]" value="T" ${p2t.tgl_kembali != null ? 'checked' : ''} disabled>
-            <label></label>
-          </div>
-        </td>
+        <td>${p2t.kd_tool || ''}</td>
+        <td>${p2t.tool.nm_tool || ''}</td>
+        <td class="text-center">${p2t.tool.jenis_tool.nm_jenis || ''}</td>
+        <td class="text-center">${p2t.qty || ''}</td>
+        <td class="text-center">${p2t.tgl_kembali != null ? moment(p2t.tgl_kembali).format('DD-MM-YYYY HH:mm') : ''}</td>
       </tr>
     `;
   }
