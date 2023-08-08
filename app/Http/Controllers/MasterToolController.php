@@ -71,7 +71,7 @@ class MasterToolController extends Controller
 				'stok_minimal' => $stok_minimal,
 				'harga' => $harga,
 				'st_aktif' => $st_aktif,
-				'st_sekali_pakai' => $st_aktif,
+				'st_sekali_pakai' => $st_sekali_pakai,
 			]);
 
 			DB::commit();
