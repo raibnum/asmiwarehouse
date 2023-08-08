@@ -44,7 +44,7 @@ class MasterToolController extends Controller
 				$st_aktif = false;
 			}
 
-			$st_sekali_pakai = trim($data['st_sekali_pakai']) != '' ? trim($data['st_sekali_pakai']) : true;
+			$st_sekali_pakai = trim($data['st_sekali_pakai']) != '' ? trim($data['st_sekali_pakai']) : false;
 			if ($st_sekali_pakai == 'T') {
 				$st_sekali_pakai = true;
 			} else if ($st_sekali_pakai == 'F') {
