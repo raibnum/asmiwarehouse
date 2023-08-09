@@ -21,10 +21,10 @@
           <div class="form-group row">
             <label for="create_tgl" class="col-sm-2 col-form-label">Tanggal</label>
             <div class="col-sm-4">
-              <input type="date" name="tgl" id="create_tgl" class="form-control" required>
+              <input type="date" name="tgl" id="create_tgl" class="form-control" readonly required>
             </div>
             <div class="col-sm-2">
-              <input type="time" name="jam" id="create_jam" class="form-control" required>
+              <input type="time" name="jam" id="create_jam" class="form-control" readonly required>
             </div>
           </div>
 
@@ -79,7 +79,7 @@
                 </td>
                 <td>
                   <input type="number" name="qty_tool[]" class="form-control form-control-sm" min="0" step="1"
-                    onchange="checkMaxValue(this); checkNilValue(this);" required>
+                    onchange="checkMaxValue(this);" required>
                   <div class="invalid-feedback">Stok kurang</div>
                 </td>
                 <td class="text-center">

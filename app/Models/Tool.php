@@ -27,7 +27,7 @@ class Tool extends Model
 	 */
 	protected function stokAvailable(): Attribute
 	{
-		$stok = $this->stok - array_sum($this->pinjamTool2s()->pluck('qty')->all());
+		$stok = $this->stok - array_sum($this->pinjamTool2s()->whereNull('tgl_kembali')->pluck('qty')->all());
 		return Attribute::make(
 			get: fn () => $stok,
 		);
