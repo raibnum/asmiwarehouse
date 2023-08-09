@@ -63,6 +63,10 @@ class MasterToolController extends Controller
 				]);
 			}
 
+			$checkTool = Tool::find($kd_tool);
+
+			if ($checkTool != null) throw new \Exception('Kode Tool sudah ada');
+
 			Tool::create([
 				'kd_tool' => $kd_tool,
 				'nm_tool' => $nm_tool,
