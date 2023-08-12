@@ -253,7 +253,7 @@
         Swal.fire(res.title, res.message, res.status);
         reloadTableMaster();
 
-        optTool = res.data.opt;
+        optTool = res.data.opt_tool;
         $('#modalEditPinjamTool').modal('hide');
       }).fail(xhr => {
         $('#loading').hide();
