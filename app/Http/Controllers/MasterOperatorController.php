@@ -43,9 +43,13 @@ class MasterOperatorController extends Controller
 
       DB::beginTransaction();
 
+      $checkOperator = Operator::where('nm_operator', $nm_operator)->where('divisi', $divisi)->get()->first();
+
+      if ($checkOperator != null) throw new \Exception('Operator sudah ada');
+
       Operator::create([
-        'nm_operator' => $data['nm_operator'],
-        'divisi' => $data['divisi']
+        'nm_operator' => $nm_operator,
+        'divisi' => $divisi
       ]);
 
       DB::commit();
